@@ -1,0 +1,139 @@
+@if (dashboard(); as d) {
+  <div class="space-y-8">
+    <p class="text-ink/50 dark:text-white/50 text-sm -mt-2">Vue d'ensemble de l'activité de la plateforme</p>
+
+    <!-- KPIs principaux -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="bg-surface dark:bg-surface-dark border border-ink/10 dark:border-white/10 rounded-2xl p-5 transition-colors duration-300">
+        <p class="text-xs text-ink/50 dark:text-white/50 uppercase tracking-wide mb-2">Utilisateurs actifs</p>
+        <p class="font-display text-3xl font-bold text-ink dark:text-white">{{ d.nombreUtilisateursActifs }}</p>
+      </div>
+      <div class="bg-surface dark:bg-surface-dark border border-ink/10 dark:border-white/10 rounded-2xl p-5 transition-colors duration-300">
+        <p class="text-xs text-ink/50 dark:text-white/50 uppercase tracking-wide mb-2">Utilisateurs suspendus</p>
+        <p class="font-display text-3xl font-bold text-ink dark:text-white">{{ d.nombreUtilisateursSuspendus }}</p>
+      </div>
+      <div class="bg-surface dark:bg-surface-dark border border-ink/10 dark:border-white/10 rounded-2xl p-5 transition-colors duration-300">
+        <p class="text-xs text-ink/50 dark:text-white/50 uppercase tracking-wide mb-2">Volume financier total</p>
+        <p class="font-display text-3xl font-bold text-gold-600 dark:text-gold-400">{{ d.volumeFinancierTotal | number }} FCFA</p>
+      </div>
+      <div class="bg-coral/5 dark:bg-coral/10 border border-coral/20 rounded-2xl p-5 transition-colors duration-300">
+        <p class="text-xs text-coral/80 uppercase tracking-wide mb-2">Prêts en retard</p>
+        <p class="font-display text-3xl font-bold text-coral">{{ d.repartitionPretsParStatut['EN_RETARD'] || 0 }}</p>
+      </div>
+    </div>
+
+    <!-- Montants prêtés / remboursés / taux -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div class="bg-surface dark:bg-surface-dark border border-ink/10 dark:border-white/10 rounded-2xl p-5 transition-colors duration-300">
+        <p class="text-xs text-ink/50 dark:text-white/50 uppercase tracking-wide mb-2">Montant total prêté</p>
+        <p class="font-display text-2xl font-semibold text-ink dark:text-white">{{ d.montantTotalPrete | number }} FCFA</p>
+      </div>
+      <div class="bg-surface dark:bg-surface-dark border border-ink/10 dark:border-white/10 rounded-2xl p-5 transition-colors duration-300">
+        <p class="text-xs text-ink/50 dark:text-white/50 uppercase tracking-wide mb-2">Montant total remboursé</p>
+        <p class="font-display text-2xl font-semibold text-ink dark:text-white">{{ d.montantTotalRembourse | number }} FCFA</p>
+      </div>
+      <div class="bg-surface dark:bg-surface-dark border border-ink/10 dark:border-white/10 rounded-2xl p-5 transition-colors duration-300">
+        <div class="flex items-center justify-between mb-2">
+          <p class="text-xs text-ink/50 dark:text-white/50 uppercase tracking-wide">Taux de remboursement</p>
+          <p class="font-display text-lg font-bold text-ink dark:text-white">{{ tauxRemboursement() }}%</p>
+        </div>
+        <div class="h-2 bg-surface2 dark:bg-white/10 rounded-full overflow-hidden">
+          <div
+            class="h-full rounded-full bg-gradient-to-r from-gold-500 to-gold-400 transition-all duration-500"
+            [style.width.%]="tauxRemboursement()">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Répartition prêts + scores, côte à côte -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+      <!-- Répartition des prêts par statut -->
+      <div class="bg-surface dark:bg-surface-dark border border-ink/10 dark:border-white/10 rounded-2xl p-6 transition-colors duration-300">
+        <h2 class="font-display text-lg font-semibold text-ink dark:text-white mb-5">Répartition des prêts par statut</h2>
+        @if (repartitionEntries().length === 0) {
+          <p class="text-sm text-ink/40 dark:text-white/40">Aucune donnée disponible pour le moment.</p>
+        } @else {
+          <div class="space-y-3">
+            @for (entry of repartitionEntries(); track entry[0]) {
+              <div class="flex items-center gap-4">
+                <span class="text-sm text-ink/60 dark:text-white/60 w-24 shrink-0">{{ label(entry[0]) }}</span>
+                <div class="flex-1 h-6 bg-surface2 dark:bg-white/5 rounded-full overflow-hidden">
+                  <div
+                    class="h-full rounded-full transition-all duration-500"
+                    [class]="color(entry[0])"
+                    [style.width.%]="(entry[1] / maxRepartition()) * 100">
+                  </div>
+                </div>
+                <span class="text-sm font-semibold text-ink dark:text-white w-8 text-right">{{ entry[1] }}</span>
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Répartition des scores de solvabilité -->
+      <div class="bg-surface dark:bg-surface-dark border border-ink/10 dark:border-white/10 rounded-2xl p-6 transition-colors duration-300">
+        <h2 class="font-display text-lg font-semibold text-ink dark:text-white mb-5">Répartition des scores de solvabilité</h2>
+        @if (scoreEntries().length === 0) {
+          <p class="text-sm text-ink/40 dark:text-white/40">Aucun score calculé pour le moment.</p>
+        } @else {
+          <div class="space-y-3">
+            @for (entry of scoreEntries(); track entry[0]) {
+              <div class="flex items-center gap-4">
+                <span class="text-sm text-ink/60 dark:text-white/60 w-32 shrink-0 truncate">{{ entry[0] }}</span>
+                <div class="flex-1 h-6 bg-surface2 dark:bg-white/5 rounded-full overflow-hidden">
+                  <div
+                    class="h-full rounded-full transition-all duration-500"
+                    [class]="scoreColor(entry[0])"
+                    [style.width.%]="(entry[1] / maxScore()) * 100">
+                  </div>
+                </div>
+                <span class="text-sm font-semibold text-ink dark:text-white w-8 text-right">{{ entry[1] }}</span>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Évolution mensuelle -->
+    <div class="bg-surface dark:bg-surface-dark border border-ink/10 dark:border-white/10 rounded-2xl p-6 transition-colors duration-300">
+      <h2 class="font-display text-lg font-semibold text-ink dark:text-white mb-6">Évolution mensuelle du volume prêté</h2>
+
+      @if (d.evolutionMensuelle.length === 0) {
+        <p class="text-sm text-ink/40 dark:text-white/40">Aucune donnée d'évolution disponible.</p>
+      } @else {
+        <div class="flex items-end gap-4 h-48 mb-4">
+          @for (m of d.evolutionMensuelle; track m.mois) {
+            <div class="flex-1 flex flex-col items-center justify-end h-full gap-2">
+              <span class="text-xs font-semibold text-ink dark:text-white">{{ m.montantPrete | number }}</span>
+              <div
+                class="w-full max-w-12 rounded-t-lg bg-gradient-to-t from-gold-500 to-gold-400 transition-all duration-500"
+                [style.height.%]="evolutionBarHeight(m.montantPrete)">
+              </div>
+              <span class="text-xs text-ink/50 dark:text-white/50 uppercase tracking-wide">{{ m.mois }}</span>
+            </div>
+          }
+        </div>
+
+        <!-- Détail par mois -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 border-t border-ink/10 dark:border-white/10">
+          @for (m of d.evolutionMensuelle; track m.mois) {
+            <div class="bg-surface2 dark:bg-black/20 rounded-xl p-4">
+              <p class="text-xs text-gold-600 dark:text-gold-400 uppercase tracking-wide mb-3">{{ m.mois }}</p>
+              <div class="space-y-1.5 text-sm text-ink/70 dark:text-white/70">
+                <p>{{ m.nombreNouveauxPrets }} nouveau(x) prêt(s)</p>
+                <p>{{ m.nombreTransactions }} transaction(s)</p>
+                <p>{{ m.volumeTransactions | number }} FCFA de transactions</p>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+} @else {
+  <p class="text-ink/50 dark:text-white/50">Chargement du tableau de bord...</p>
+}

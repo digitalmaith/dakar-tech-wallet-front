@@ -1,0 +1,20 @@
+.pattern-wax {
+  background-image:
+    repeating-linear-gradient(45deg, rgba(232, 163, 61, 0.08) 0 1px, transparent 1px 42px),
+    repeating-linear-gradient(-45deg, rgba(232, 163, 61, 0.08) 0 1px, transparent 1px 42px);
+  animation: drift 40s linear infinite;
+}
+
+@keyframes drift {
+  from { background-position: 0 0, 0 0; }
+  to { background-position: 200px 200px, -200px 200px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pattern-wax {
+    animation: none;
+  }
+  * {
+    transition-duration: 0.01ms !important;
+  }
+}

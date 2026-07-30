@@ -1,0 +1,407 @@
+<div class="min-h-screen w-full flex font-body relative overflow-hidden">
+
+  <!-- Background Image avec overlay -->
+  <div class="absolute inset-0 z-0">
+    <img 
+      src="https://images.pexels.com/photos/6771147/pexels-photo-6771147.jpeg?_gl=1*1wrveo5*_ga*MzE4MTQ1NzYyLjE3ODUyNTA5MTg.*_ga_8JE65Q40S6*czE3ODUyNTA5MTgkbzEkZzEkdDE3ODUyNTEwNjUkajI5JGwwJGgw" 
+      alt="Dakar cityscape" 
+      class="w-full h-full object-cover"
+    />
+    <div class="absolute inset-0 bg-gradient-to-r from-deep/95 via-deep/80 to-deep/70"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-deep/90 via-deep/50 to-transparent"></div>
+  </div>
+
+  <!-- Panneau gauche : identité de marque -->
+  <aside class="hidden lg:flex lg:w-[42%] relative z-10 flex-col justify-between p-12 min-h-screen">
+    <!-- Pattern overlay subtil -->
+    <div class="absolute inset-0 opacity-10" 
+         style="background-image: radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.2) 0%, transparent 50%), 
+                  repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(212, 175, 55, 0.05) 2px, rgba(212, 175, 55, 0.05) 4px);">
+    </div>
+    
+    <div class="absolute inset-0 bg-gradient-to-t from-deep/80 via-transparent to-transparent"></div>
+
+    <!-- Logo -->
+    <div class="relative z-10 flex items-center gap-4">
+      <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center font-display font-bold text-deep text-xl shadow-lg shadow-gold-500/30">
+        <i class="ri-exchange-dollar-fill text-4xl"></i>
+      </div>
+      <div>
+        <span class="font-display font-semibold text-white text-xl tracking-tight block">Dakar-Tech
+        <span class="text-gold-400 text-xs font-medium tracking-widest uppercase">Wallet</span></span>
+                <span class="text-gold-400 text-xs font-semibold tracking-[0.2em] uppercase">Solution financière</span>
+
+      </div>
+    </div>
+
+    <!-- Contenu -->
+    <div class="relative z-10 max-w-md -mt-8">
+      
+      
+      <h1 class="font-display text-5xl font-bold text-white leading-[1.1] mb-6">
+        Votre argent,
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-gold-300">au rythme de Dakar.</span>
+      </h1>
+      
+      <p class="text-white/60 text-base leading-relaxed mb-10 max-w-sm">
+        Transférez, épargnez et empruntez en toute confiance — un score de solvabilité transparent, calculé à chaque paiement.
+      </p>
+
+      <!-- Features -->
+      <div class="space-y-5">
+        <div class="flex items-start gap-4 group">
+          <div class="w-10 h-10 rounded-xl bg-gold-500/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
+            <svg class="w-5 h-5 text-gold-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
+          </div>
+          <div>
+            <p class="text-sm font-medium text-white/90">Virements instantanés</p>
+            <p class="text-xs text-white/50">Entre comptes en temps réel</p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4 group">
+          <div class="w-10 h-10 rounded-xl bg-gold-500/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
+            <svg class="w-5 h-5 text-gold-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <div>
+            <p class="text-sm font-medium text-white/90">Score de solvabilité</p>
+            <p class="text-xs text-white/50">Mis à jour en continu</p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4 group">
+          <div class="w-10 h-10 rounded-xl bg-gold-500/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
+            <svg class="w-5 h-5 text-gold-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V6m0 10v-2" />
+            </svg>
+          </div>
+          <div>
+            <p class="text-sm font-medium text-white/90">Remboursements flexibles</p>
+            <p class="text-xs text-white/50">Mensuels ou totaux</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="relative z-10 flex items-center justify-between">
+      <p class="text-xs text-white/40">© 2026 Dakar-Tech Wallet</p>
+      <div class="flex gap-4">
+        <span class="text-xs text-white/40 hover:text-gold-400 transition-colors cursor-pointer">Confidentialité</span>
+        <span class="text-xs text-white/40 hover:text-gold-400 transition-colors cursor-pointer">Conditions</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Panneau droit : Authentification -->
+  <main class="flex-1 flex items-center justify-center p-6 sm:p-10 relative z-10">
+    <div class="w-full max-w-md">
+
+      <!-- Logo mobile -->
+      <div class="lg:hidden flex items-center gap-3 mb-8 justify-center">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center font-display font-bold text-deep shadow-lg shadow-gold-500/30">
+          DW
+        </div>
+        <div>
+          <span class="font-display font-semibold text-white text-lg block">Dakar-Tech</span>
+          <span class="text-gold-400 text-[10px] font-medium tracking-widest uppercase block -mt-0.5">Wallet</span>
+        </div>
+      </div>
+
+      <!-- Carte -->
+      <div class="bg-white/5 backdrop-blur-2xl rounded-3xl shadow-2xl shadow-black/50 border border-white/10 overflow-hidden hover:border-gold-500/20 transition-all duration-500">
+
+        <!-- Tab switcher -->
+        <div class="relative flex m-2 rounded-2xl bg-black/20 p-1.5 shadow-inner">
+          <span
+            class="absolute inset-y-1.5 left-1.5 w-[calc(50%-6px)] rounded-xl bg-gradient-to-r from-gold-500 to-gold-400 transition-all duration-400 ease-[cubic-bezier(0.34,1.56,0.64,1)] shadow-lg shadow-gold-500/40"
+            [style.transform]="pillTransform()">
+          </span>
+          <button
+            type="button"
+            (click)="setMode('connexion')"
+            class="relative z-10 flex-1 py-3 text-sm font-semibold rounded-xl transition-colors duration-300"
+            [class.text-deep]="mode() === 'connexion'"
+            [class.text-white/60]="mode() !== 'connexion'">
+            <span class="flex items-center justify-center gap-2">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+              </svg>
+              Connexion
+            </span>
+          </button>
+          <button
+            type="button"
+            (click)="setMode('inscription')"
+            class="relative z-10 flex-1 py-3 text-sm font-semibold rounded-xl transition-colors duration-300"
+            [class.text-deep]="mode() === 'inscription'"
+            [class.text-white/60]="mode() !== 'inscription'">
+            <span class="flex items-center justify-center gap-2">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+              </svg>
+              Inscription
+            </span>
+          </button>
+        </div>
+
+        <!-- Rail coulissant -->
+        <div class="overflow-hidden px-1">
+          <div
+            class="flex w-[200%] transition-transform duration-400 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+            [style.transform]="trackTransform()">
+
+            <!-- Formulaire Connexion -->
+            <div class="w-1/2 p-8 pt-6">
+              <h2 class="font-display text-2xl font-bold text-white mb-1">Bienvenue</h2>
+              <p class="text-white/50 text-sm mb-6">Connectez-vous à votre espace</p>
+
+              <form [formGroup]="connexionForm" (ngSubmit)="submitConnexion()" class="space-y-5">
+                <div class="group">
+                  <label class="block text-xs font-semibold text-white/70 mb-2 uppercase tracking-wider">Email</label>
+                  <div class="relative">
+                    <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    <input type="email" formControlName="email" placeholder="vous@exemple.com"
+                      class="w-full pl-11 pr-4 py-3 bg-white/5 border-2 border-white/10 rounded-2xl text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-transparent transition-all duration-300 group-hover:border-white/20" />
+                  </div>
+                  @if (connexionForm.get('email')?.invalid && connexionForm.get('email')?.touched) {
+                    <p class="text-coral text-xs mt-2 flex items-center gap-1">
+                      <span class="w-1 h-1 rounded-full bg-coral inline-block"></span>
+                      Email invalide
+                    </p>
+                  }
+                </div>
+
+                <div class="group">
+  <label class="block text-xs font-semibold text-white/70 mb-2 uppercase tracking-wider">Mot de passe</label>
+  <div class="relative">
+    <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+    </svg>
+    <input [type]="showPasswordConnexion() ? 'text' : 'password'" formControlName="motDePasse" placeholder="••••••••"
+      class="w-full pl-11 pr-11 py-3 bg-white/5 border-2 border-white/10 rounded-2xl text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-transparent transition-all duration-300 group-hover:border-white/20" />
+    <button type="button" (click)="togglePasswordConnexion()"
+      class="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 hover:text-gold-400 transition-colors">
+      @if (showPasswordConnexion()) {
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21" />
+        </svg>
+      } @else {
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+        </svg>
+      }
+    </button>
+  </div>
+  @if (connexionForm.get('motDePasse')?.invalid && connexionForm.get('motDePasse')?.touched) {
+    <p class="text-coral text-xs mt-2 flex items-center gap-1">
+      <span class="w-1 h-1 rounded-full bg-coral inline-block"></span>
+      6 caractères minimum
+    </p>
+  }
+</div>
+
+                @if (errorMessage() && mode() === 'connexion') {
+                  <div class="bg-coral/10 border border-coral/20 rounded-xl p-3">
+                    <p class="text-coral text-sm text-center">{{ errorMessage() }}</p>
+                  </div>
+                }
+
+                <button type="submit" [disabled]="loading()"
+                  class="w-full bg-gradient-to-r from-gold-500 to-gold-400 hover:from-gold-600 hover:to-gold-500 text-deep font-bold py-3.5 rounded-2xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-gold-500/20 hover:shadow-gold-500/40 transform hover:-translate-y-0.5">
+                  {{ loading() && mode() === 'connexion' ? 'Connexion...' : 'Se connecter' }}
+                </button>
+              </form>
+            </div>
+
+            <!-- Formulaire Inscription en étapes -->
+<div class="w-1/2 p-8 pt-6">
+  <div class="flex items-center justify-between mb-2">
+    <h2 class="font-display text-2xl font-bold text-white">Créer un compte</h2>
+    <span class="text-xs font-medium text-white/50">Étape {{ step() }}/3</span>
+  </div>
+  <p class="text-white/50 text-sm mb-6">{{ getStepDescription(step()) }}</p>
+
+  <!-- Indicateur de progression -->
+  <div class="flex gap-1.5 mb-6">
+    <div 
+      class="h-1 flex-1 rounded-full transition-all duration-500"
+      [class.bg-gold-500]="step() >= 1"
+      [class.bg-white/10]="step() < 1"
+    ></div>
+    <div 
+      class="h-1 flex-1 rounded-full transition-all duration-500"
+      [class.bg-gold-500]="step() >= 2"
+      [class.bg-white/10]="step() < 2"
+    ></div>
+    <div 
+      class="h-1 flex-1 rounded-full transition-all duration-500"
+      [class.bg-gold-500]="step() >= 3"
+      [class.bg-white/10]="step() < 3"
+    ></div>
+  </div>
+
+  <form [formGroup]="inscriptionForm" (ngSubmit)="submitInscription()" class="space-y-4">
+    <!-- Étape 1: Informations personnelles -->
+    <div [hidden]="step() !== 1">
+      <div class="grid  gap-3">
+        <div class="group">
+          <label class="block text-xs font-semibold text-white/70 mb-2 uppercase tracking-wider">Nom</label>
+          <input type="text" formControlName="nom" placeholder="Dupont"
+            class="w-full px-4 py-3 bg-white/5 border-2 border-white/10 rounded-2xl text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-transparent transition-all duration-300 group-hover:border-white/20" />
+          @if (inscriptionForm.get('nom')?.invalid && inscriptionForm.get('nom')?.touched) {
+            <p class="text-coral text-xs mt-2 flex items-center gap-1">
+              <span class="w-1 h-1 rounded-full bg-coral inline-block"></span>
+              Le nom est requis
+            </p>
+          }
+        </div>
+        <div class="group">
+          <label class="block text-xs font-semibold text-white/70 mb-2 uppercase tracking-wider">Prénom</label>
+          <input type="text" formControlName="prenom" placeholder="Jean"
+            class="w-full px-4 py-3 bg-white/5 border-2 border-white/10 rounded-2xl text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-transparent transition-all duration-300 group-hover:border-white/20" />
+          @if (inscriptionForm.get('prenom')?.invalid && inscriptionForm.get('prenom')?.touched) {
+            <p class="text-coral text-xs mt-2 flex items-center gap-1">
+              <span class="w-1 h-1 rounded-full bg-coral inline-block"></span>
+              Le prénom est requis
+            </p>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Étape 2: Informations de connexion -->
+    <div [hidden]="step() !== 2">
+      <div class="group">
+        <label class="block text-xs font-semibold text-white/70 mb-2 uppercase tracking-wider">Email</label>
+        <div class="relative">
+          <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+          <input type="email" formControlName="email" placeholder="vous@exemple.com"
+            class="w-full pl-11 pr-4 py-3 bg-white/5 border-2 border-white/10 rounded-2xl text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-transparent transition-all duration-300 group-hover:border-white/20" />
+        </div>
+        @if (inscriptionForm.get('email')?.invalid && inscriptionForm.get('email')?.touched) {
+          <p class="text-coral text-xs mt-2 flex items-center gap-1">
+            <span class="w-1 h-1 rounded-full bg-coral inline-block"></span>
+            Email invalide
+          </p>
+        }
+      </div>
+    </div>
+
+    <!-- Étape 3: Sécurité -->
+    <div [hidden]="step() !== 3">
+      <div class="group">
+  <label class="block text-xs font-semibold text-white/70 mb-2 uppercase tracking-wider">Mot de passe</label>
+  <div class="relative">
+    <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+    </svg>
+    <input [type]="showPasswordInscription() ? 'text' : 'password'" formControlName="motDePasse" placeholder="••••••••"
+      class="w-full pl-11 pr-11 py-3 bg-white/5 border-2 border-white/10 rounded-2xl text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-transparent transition-all duration-300 group-hover:border-white/20" />
+    <button type="button" (click)="togglePasswordInscription()"
+      class="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 hover:text-gold-400 transition-colors">
+      @if (showPasswordInscription()) {
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21" />
+        </svg>
+      } @else {
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+        </svg>
+      }
+    </button>
+  </div>
+  <div class="mt-2 flex gap-1">
+    <div class="h-1 flex-1 rounded-full" [class.bg-green-400]="passwordStrength() >= 1" [class.bg-white/10]="passwordStrength() < 1"></div>
+    <div class="h-1 flex-1 rounded-full" [class.bg-green-400]="passwordStrength() >= 2" [class.bg-white/10]="passwordStrength() < 2"></div>
+    <div class="h-1 flex-1 rounded-full" [class.bg-green-400]="passwordStrength() >= 3" [class.bg-white/10]="passwordStrength() < 3"></div>
+  </div>
+  @if (inscriptionForm.get('motDePasse')?.invalid && inscriptionForm.get('motDePasse')?.touched) {
+    <p class="text-coral text-xs mt-2 flex items-center gap-1">
+      <span class="w-1 h-1 rounded-full bg-coral inline-block"></span>
+      6 caractères minimum
+    </p>
+  }
+</div>
+
+      <div class="group">
+  <label class="block text-xs font-semibold text-white/70 mb-2 uppercase tracking-wider">Confirmation</label>
+  <div class="relative">
+    <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+    <input [type]="showConfirmation() ? 'text' : 'password'" formControlName="confirmation" placeholder="••••••••"
+      class="w-full pl-11 pr-11 py-3 bg-white/5 border-2 border-white/10 rounded-2xl text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-transparent transition-all duration-300 group-hover:border-white/20" />
+    <button type="button" (click)="toggleConfirmation()"
+      class="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 hover:text-gold-400 transition-colors">
+      @if (showConfirmation()) {
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21" />
+        </svg>
+      } @else {
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+        </svg>
+      }
+    </button>
+  </div>
+  @if (inscriptionForm.errors?.['passwordsMismatch'] && inscriptionForm.get('confirmation')?.touched) {
+    <p class="text-coral text-xs mt-2 flex items-center gap-1">
+      <span class="w-1 h-1 rounded-full bg-coral inline-block"></span>
+      Les mots de passe ne correspondent pas
+    </p>
+  }
+</div>
+    </div>
+
+    @if (errorMessage() && mode() === 'inscription') {
+      <div class="bg-coral/10 border border-coral/20 rounded-xl p-3">
+        <p class="text-coral text-sm text-center">{{ errorMessage() }}</p>
+      </div>
+    }
+
+    <!-- Navigation des étapes -->
+    <div class="flex gap-3 pt-2">
+      <button 
+        type="button" 
+        (click)="prevStep()"
+        [hidden]="step() === 1"
+        class="flex-1 px-4 py-3 bg-white/5 hover:bg-white/10 border-2 border-white/10 rounded-2xl text-white/70 font-medium transition-all duration-300">
+        Retour
+      </button>
+      <button 
+        type="button" 
+        (click)="nextStep()"
+        [hidden]="step() === 3"
+        [disabled]="!canProceed()"
+        class="flex-1 px-4 py-3 bg-gradient-to-r from-gold-500 to-gold-400 hover:from-gold-600 hover:to-gold-500 text-deep font-bold rounded-2xl transition-all duration-300 shadow-lg shadow-gold-500/20 hover:shadow-gold-500/40 transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed">
+        Suivant
+      </button>
+      <button 
+        type="submit" 
+        [hidden]="step() !== 3"
+        [disabled]="loading() || inscriptionForm.invalid"
+        class="flex-1 px-4 py-3 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-bold rounded-2xl transition-all duration-300 shadow-lg shadow-green-500/20 hover:shadow-green-500/40 transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed">
+        {{ loading() ? 'Création...' : 'Créer mon compte' }}
+      </button>
+    </div>
+  </form>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

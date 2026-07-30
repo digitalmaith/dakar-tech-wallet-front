@@ -1,0 +1,63 @@
+<div class="space-y-6">
+  <p class="text-ink/50 dark:text-white/50 text-sm -mt-2">{{ utilisateurs().length }} compte(s) enregistré(s)</p>
+
+  @if (errorMessage()) {
+    <div class="bg-coral/5 dark:bg-coral/10 border border-coral/20 rounded-xl p-3">
+      <p class="text-coral text-sm">{{ errorMessage() }}</p>
+    </div>
+  }
+
+  <div class="bg-surface dark:bg-surface-dark border border-ink/10 dark:border-white/10 rounded-2xl overflow-hidden transition-colors duration-300">
+    <table class="w-full text-sm">
+      <thead>
+        <tr class="border-b border-ink/10 dark:border-white/10 text-left text-ink/50 dark:text-white/50 uppercase text-xs tracking-wide">
+          <th class="px-6 py-4">Utilisateur</th>
+          <th class="px-6 py-4">Rôle</th>
+          <th class="px-6 py-4">Solde</th>
+          <th class="px-6 py-4">Score</th>
+          <th class="px-6 py-4">Statut</th>
+          <th class="px-6 py-4"></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (u of utilisateurs(); track u.id) {
+          <tr class="border-b border-ink/5 dark:border-white/5 last:border-0">
+            <td class="px-6 py-4">
+              <p class="text-ink dark:text-white font-medium">{{ u.prenom }} {{ u.nom }}</p>
+              <p class="text-ink/40 dark:text-white/40 text-xs">{{ u.email }}</p>
+            </td>
+            <td class="px-6 py-4 text-ink/70 dark:text-white/70">{{ u.role }}</td>
+            <td class="px-6 py-4 text-ink dark:text-white font-medium">{{ u.solde | number }} FCFA</td>
+            <td class="px-6 py-4">
+              <span class="px-2.5 py-1 rounded-full text-xs font-medium" [class]="scoreColor(u.score)">
+                {{ u.score }}
+              </span>
+            </td>
+            <td class="px-6 py-4">
+              @if (u.statutCompte === 'ACTIF') {
+                <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-green-500/10 text-green-600 dark:bg-green-400/20 dark:text-green-400">Actif</span>
+              } @else {
+                <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-coral/10 text-coral dark:bg-coral/20">Suspendu</span>
+              }
+            </td>
+            <td class="px-6 py-4 text-right">
+              <button
+                (click)="toggleStatut(u)"
+                [disabled]="processingId() === u.id"
+                class="text-xs font-medium hover:underline disabled:opacity-50"
+                [class.text-coral]="u.statutCompte === 'ACTIF'"
+                [class.text-gold-600]="u.statutCompte !== 'ACTIF'"
+                [class.dark:text-gold-400]="u.statutCompte !== 'ACTIF'">
+                @if (processingId() === u.id) {
+                  {{ u.statutCompte === 'ACTIF' ? 'Suspension...' : 'Réactivation...' }}
+                } @else {
+                  {{ u.statutCompte === 'ACTIF' ? 'Suspendre' : 'Réactiver' }}
+                }
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
