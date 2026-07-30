@@ -1,0 +1,53 @@
+<div class="min-h-screen bg-canvas dark:bg-deep font-body transition-colors duration-300">
+
+  <header class="border-b border-ink/10 dark:border-white/10 bg-surface dark:bg-surface-dark transition-colors duration-300">
+    <div class="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center font-display font-bold text-ink text-sm">
+          DW
+        </div>
+        <span class="font-display font-semibold text-ink dark:text-white text-sm hidden sm:block">Dakar-Tech Wallet</span>
+      </div>
+
+      <nav class="flex items-center gap-1">
+        <a routerLink="/client/dashboard" routerLinkActive="bg-gold-500/10 text-gold-600 dark:text-gold-400"
+           class="px-4 py-2 rounded-xl text-sm font-medium text-ink/60 dark:text-white/60 hover:text-ink dark:hover:text-white transition">
+          Portefeuille
+        </a>
+        <a routerLink="/client/virement" routerLinkActive="bg-gold-500/10 text-gold-600 dark:text-gold-400"
+           class="px-4 py-2 rounded-xl text-sm font-medium text-ink/60 dark:text-white/60 hover:text-ink dark:hover:text-white transition">
+          Virement
+        </a>
+        <a routerLink="/client/pret" routerLinkActive="bg-gold-500/10 text-gold-600 dark:text-gold-400"
+           class="px-4 py-2 rounded-xl text-sm font-medium text-ink/60 dark:text-white/60 hover:text-ink dark:hover:text-white transition">
+          Demande de prêt
+        </a>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <button
+          type="button"
+          (click)="themeService.toggle()"
+          class="w-9 h-9 rounded-full flex items-center justify-center bg-surface2 dark:bg-white/10 text-ink/60 dark:text-white/60 hover:text-gold-600 dark:hover:text-gold-400 transition-colors"
+          [attr.aria-label]="themeService.theme() === 'dark' ? 'Passer en thème clair' : 'Passer en thème sombre'">
+          @if (themeService.theme() === 'dark') {
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+          } @else {
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            </svg>
+          }
+        </button>
+        <button (click)="authService.logout()" class="text-coral text-xs font-medium hover:underline">
+          Déconnexion
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-6 py-8">
+    <router-outlet></router-outlet>
+  </main>
+</div>

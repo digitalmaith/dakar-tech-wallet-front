@@ -107,4 +107,25 @@ export class DashboardComponent {
     const max = this.maxVolumeEvolution();
     return max > 0 ? Math.max(4, Math.round((montant / max) * 100)) : 4;
   }
+
+
+
+today = new Date();
+
+  // Ajoutez ces méthodes pour le graphique
+  getEvolutionPoints(): string {
+    const evolution = this.dashboard()?.evolutionMensuelle;
+    if (!evolution || evolution.length === 0) return '';
+    const max = Math.max(...evolution.map(m => m.montantPrete), 1);
+    return evolution.map((m, i) => {
+      const x = (i / (evolution.length - 1)) * 780 + 20;
+      const y = 200 - (m.montantPrete / max) * 180 - 10;
+      return `${x},${y}`;
+    }).join(' ');
+  }
+
+    getMaxEvolution(): number {
+    const evolution = this.dashboard()?.evolutionMensuelle;
+    return Math.max(...(evolution?.map(m => m.montantPrete) || [1]));
+  }
 }

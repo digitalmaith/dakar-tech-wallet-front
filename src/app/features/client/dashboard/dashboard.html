@@ -1,12 +1,66 @@
-<div class="min-h-screen bg-deep flex items-center justify-center">
-  <div class="text-center">
-    <p class="text-gold-400 text-sm uppercase tracking-widest mb-2">Espace Client</p>
-    <h1 class="font-display text-3xl font-bold text-white mb-2">
-      Bienvenue, {{ authService.currentUser()?.prenom }}
-    </h1>
-    <p class="text-white/50">Le vrai tableau de bord arrive bientôt.</p>
-    <button (click)="authService.logout()" class="mt-6 text-coral text-sm hover:underline">
-      Se déconnecter
-    </button>
+<div class="space-y-8">
+
+  <!-- Carte solde -->
+  <div class="bg-gradient-to-br from-ink to-ink/90 dark:from-surface-dark dark:to-deep rounded-3xl p-8 relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10"
+         style="background-image: repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(232,163,61,0.3) 8px, rgba(232,163,61,0.3) 9px);">
+    </div>
+    <div class="relative z-10">
+      <p class="text-white/50 text-xs uppercase tracking-widest mb-1">Solde disponible</p>
+      @if (walletService.solde(); as s) {
+        <p class="font-display text-4xl font-bold text-white mb-4">{{ s.solde | number:'1.0-2' }} FCFA</p>
+        <div class="flex items-center gap-2">
+          <span class="text-white/40 text-xs">Compte</span>
+          <span class="text-gold-400 text-sm font-mono tracking-wide">{{ s.numeroCompte }}</span>
+        </div>
+      } @else {
+        <p class="text-white/40 text-sm">Chargement...</p>
+      }
+    </div>
+  </div>
+
+  <!-- Historique -->
+  <div>
+    <h2 class="font-display text-lg font-semibold text-ink dark:text-white mb-4">Historique des transactions</h2>
+
+    @if (transactionsTrieees().length === 0) {
+      <div class="bg-surface dark:bg-surface-dark border border-ink/10 dark:border-white/10 rounded-2xl p-10 text-center transition-colors duration-300">
+        <p class="text-ink/50 dark:text-white/50">Aucune transaction pour le moment.</p>
+      </div>
+    } @else {
+      <div class="bg-surface dark:bg-surface-dark border border-ink/10 dark:border-white/10 rounded-2xl divide-y divide-ink/5 dark:divide-white/5 transition-colors duration-300">
+        @for (t of transactionsTrieees(); track t.id) {
+          <div class="flex items-center justify-between p-5">
+            <div class="flex items-center gap-4">
+              <div
+                class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                [class.bg-green-500/10]="isEntree(t.type)"
+                [class.bg-coral/10]="!isEntree(t.type)">
+                @if (isEntree(t.type)) {
+                  <svg class="w-4 h-4 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 11l5-5m0 0l5 5m-5-5v12" />
+                  </svg>
+                } @else {
+                  <svg class="w-4 h-4 text-coral" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 13l-5 5m0 0l-5-5m5 5V6" />
+                  </svg>
+                }
+              </div>
+              <div>
+                <p class="text-sm font-medium text-ink dark:text-white">{{ label(t.type) }}</p>
+                <p class="text-xs text-ink/40 dark:text-white/40">{{ t.description }} · {{ t.dateTransaction | date:'dd/MM/yyyy HH:mm' }}</p>
+              </div>
+            </div>
+            <p
+              class="text-sm font-semibold shrink-0"
+              [class.text-green-600]="isEntree(t.type)"
+              [class.dark:text-green-400]="isEntree(t.type)"
+              [class.text-coral]="!isEntree(t.type)">
+              {{ isEntree(t.type) ? '+' : '-' }}{{ t.montant | number:'1.0-2' }} FCFA
+            </p>
+          </div>
+        }
+      </div>
+    }
   </div>
 </div>

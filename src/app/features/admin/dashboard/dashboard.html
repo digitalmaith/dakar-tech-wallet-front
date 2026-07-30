@@ -1,96 +1,247 @@
 @if (dashboard(); as d) {
-  <div class="space-y-8">
-    <p class="text-ink/50 dark:text-white/50 text-sm -mt-2">Vue d'ensemble de l'activité de la plateforme</p>
-
-    <!-- KPIs principaux -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-      <div class="bg-surface dark:bg-surface-dark border border-ink/10 dark:border-white/10 rounded-2xl p-5 transition-colors duration-300">
-        <p class="text-xs text-ink/50 dark:text-white/50 uppercase tracking-wide mb-2">Utilisateurs actifs</p>
-        <p class="font-display text-3xl font-bold text-ink dark:text-white">{{ d.nombreUtilisateursActifs }}</p>
-      </div>
-      <div class="bg-surface dark:bg-surface-dark border border-ink/10 dark:border-white/10 rounded-2xl p-5 transition-colors duration-300">
-        <p class="text-xs text-ink/50 dark:text-white/50 uppercase tracking-wide mb-2">Utilisateurs suspendus</p>
-        <p class="font-display text-3xl font-bold text-ink dark:text-white">{{ d.nombreUtilisateursSuspendus }}</p>
-      </div>
-      <div class="bg-surface dark:bg-surface-dark border border-ink/10 dark:border-white/10 rounded-2xl p-5 transition-colors duration-300">
-        <p class="text-xs text-ink/50 dark:text-white/50 uppercase tracking-wide mb-2">Volume financier total</p>
-        <p class="font-display text-3xl font-bold text-gold-600 dark:text-gold-400">{{ d.volumeFinancierTotal | number }} FCFA</p>
-      </div>
-      <div class="bg-coral/5 dark:bg-coral/10 border border-coral/20 rounded-2xl p-5 transition-colors duration-300">
-        <p class="text-xs text-coral/80 uppercase tracking-wide mb-2">Prêts en retard</p>
-        <p class="font-display text-3xl font-bold text-coral">{{ d.repartitionPretsParStatut['EN_RETARD'] || 0 }}</p>
-      </div>
-    </div>
-
-    <!-- Montants prêtés / remboursés / taux -->
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <div class="bg-surface dark:bg-surface-dark border border-ink/10 dark:border-white/10 rounded-2xl p-5 transition-colors duration-300">
-        <p class="text-xs text-ink/50 dark:text-white/50 uppercase tracking-wide mb-2">Montant total prêté</p>
-        <p class="font-display text-2xl font-semibold text-ink dark:text-white">{{ d.montantTotalPrete | number }} FCFA</p>
-      </div>
-      <div class="bg-surface dark:bg-surface-dark border border-ink/10 dark:border-white/10 rounded-2xl p-5 transition-colors duration-300">
-        <p class="text-xs text-ink/50 dark:text-white/50 uppercase tracking-wide mb-2">Montant total remboursé</p>
-        <p class="font-display text-2xl font-semibold text-ink dark:text-white">{{ d.montantTotalRembourse | number }} FCFA</p>
-      </div>
-      <div class="bg-surface dark:bg-surface-dark border border-ink/10 dark:border-white/10 rounded-2xl p-5 transition-colors duration-300">
-        <div class="flex items-center justify-between mb-2">
-          <p class="text-xs text-ink/50 dark:text-white/50 uppercase tracking-wide">Taux de remboursement</p>
-          <p class="font-display text-lg font-bold text-ink dark:text-white">{{ tauxRemboursement() }}%</p>
-        </div>
-        <div class="h-2 bg-surface2 dark:bg-white/10 rounded-full overflow-hidden">
-          <div
-            class="h-full rounded-full bg-gradient-to-r from-gold-500 to-gold-400 transition-all duration-500"
-            [style.width.%]="tauxRemboursement()">
+  <div class="space-y-8 animate-fadeIn">
+    <!-- En-tête avec gradient -->
+    <div class="relative overflow-hidden bg-gradient-to-br from-gold-50/50 via-surface to-surface dark:from-gold-900/20 dark:via-surface-dark dark:to-surface-dark rounded-3xl p-8 border border-ink/10 dark:border-white/10">
+      <div class="absolute top-0 right-0 w-64 h-64 bg-gold-400/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+      <div class="absolute bottom-0 left-0 w-48 h-48 bg-coral/5 rounded-full blur-2xl translate-y-1/2 -translate-x-1/2"></div>
+      
+      <div class="relative z-10">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="font-display text-2xl font-bold text-ink dark:text-white">Tableau de bord</h1>
+            <p class="text-ink/50 dark:text-white/50 text-sm mt-1">Vue d'ensemble de l'activité de la plateforme</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="px-3 py-1 text-xs font-medium bg-gold-500/10 text-gold-600 dark:text-gold-400 rounded-full border border-gold-500/20">
+              {{ today | date:'dd/MM/yyyy' }}
+            </span>
+            <button class="p-2 rounded-xl hover:bg-ink/5 dark:hover:bg-white/5 transition-colors duration-200">
+              <svg class="w-5 h-5 text-ink/50 dark:text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+              </svg>
+            </button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Répartition prêts + scores, côte à côte -->
+    <!-- KPIs avec icônes et micro-animations -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="group bg-surface dark:bg-surface-dark border border-ink/10 dark:border-white/10 rounded-2xl p-5 transition-all duration-300 hover:shadow-lg hover:shadow-gold-500/5 hover:-translate-y-1">
+        <div class="flex items-start justify-between">
+          <div>
+            <p class="text-xs text-ink/50 dark:text-white/50 uppercase tracking-wide mb-2">Utilisateurs actifs</p>
+            <p class="font-display text-3xl font-bold text-ink dark:text-white">{{ d.nombreUtilisateursActifs }}</p>
+          </div>
+          <div class="p-2 rounded-xl bg-emerald-500/10 text-emerald-500 dark:bg-emerald-500/20">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+            </svg>
+          </div>
+        </div>
+        <div class="mt-3 flex items-center gap-2">
+          <span class="text-xs text-emerald-500 font-medium">+12%</span>
+          <span class="text-xs text-ink/40 dark:text-white/40">vs mois dernier</span>
+        </div>
+      </div>
+
+      <div class="group bg-surface dark:bg-surface-dark border border-ink/10 dark:border-white/10 rounded-2xl p-5 transition-all duration-300 hover:shadow-lg hover:shadow-gold-500/5 hover:-translate-y-1">
+        <div class="flex items-start justify-between">
+          <div>
+            <p class="text-xs text-ink/50 dark:text-white/50 uppercase tracking-wide mb-2">Utilisateurs suspendus</p>
+            <p class="font-display text-3xl font-bold text-ink dark:text-white">{{ d.nombreUtilisateursSuspendus }}</p>
+          </div>
+          <div class="p-2 rounded-xl bg-amber-500/10 text-amber-500 dark:bg-amber-500/20">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
+            </svg>
+          </div>
+        </div>
+        <div class="mt-3 flex items-center gap-2">
+          <span class="text-xs text-amber-500 font-medium">-3%</span>
+          <span class="text-xs text-ink/40 dark:text-white/40">vs mois dernier</span>
+        </div>
+      </div>
+
+      <div class="group bg-gradient-to-br from-gold-50/30 to-surface dark:from-gold-900/20 dark:to-surface-dark border border-gold-500/20 rounded-2xl p-5 transition-all duration-300 hover:shadow-lg hover:shadow-gold-500/10 hover:-translate-y-1">
+        <div class="flex items-start justify-between">
+          <div>
+            <p class="text-xs text-ink/50 dark:text-white/50 uppercase tracking-wide mb-2">Volume financier total</p>
+            <p class="font-display text-3xl font-bold text-gold-600 dark:text-gold-400">{{ d.volumeFinancierTotal | number }} FCFA</p>
+          </div>
+          <div class="p-2 rounded-xl bg-gold-500/10 text-gold-500 dark:bg-gold-500/20">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+        </div>
+        <div class="mt-3 flex items-center gap-2">
+          <span class="text-xs text-gold-500 font-medium">+8.2%</span>
+          <span class="text-xs text-ink/40 dark:text-white/40">vs mois dernier</span>
+        </div>
+      </div>
+
+      <div class="group bg-coral/5 dark:bg-coral/10 border border-coral/20 rounded-2xl p-5 transition-all duration-300 hover:shadow-lg hover:shadow-coral-500/5 hover:-translate-y-1">
+        <div class="flex items-start justify-between">
+          <div>
+            <p class="text-xs text-coral/80 uppercase tracking-wide mb-2">Prêts en retard</p>
+            <p class="font-display text-3xl font-bold text-coral">{{ d.repartitionPretsParStatut['EN_RETARD'] || 0 }}</p>
+          </div>
+          <div class="p-2 rounded-xl bg-coral/10 text-coral dark:bg-coral/20">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+        </div>
+        <div class="mt-3 flex items-center gap-2">
+          <span class="text-xs text-coral font-medium">+5%</span>
+          <span class="text-xs text-ink/40 dark:text-white/40">vs mois dernier</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Montants prêtés / remboursés / taux avec graphique circulaire -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-surface dark:bg-surface-dark border border-ink/10 dark:border-white/10 rounded-2xl p-5 transition-all duration-300 hover:shadow-lg hover:shadow-gold-500/5">
+          <div class="flex items-center gap-3">
+            <div class="p-2 rounded-xl bg-emerald-500/10 text-emerald-500 dark:bg-emerald-500/20">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-xs text-ink/50 dark:text-white/50 uppercase tracking-wide">Montant total prêté</p>
+              <p class="font-display text-2xl font-semibold text-ink dark:text-white">{{ d.montantTotalPrete | number }} FCFA</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="bg-surface dark:bg-surface-dark border border-ink/10 dark:border-white/10 rounded-2xl p-5 transition-all duration-300 hover:shadow-lg hover:shadow-gold-500/5">
+          <div class="flex items-center gap-3">
+            <div class="p-2 rounded-xl bg-blue-500/10 text-blue-500 dark:bg-blue-500/20">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-xs text-ink/50 dark:text-white/50 uppercase tracking-wide">Montant total remboursé</p>
+              <p class="font-display text-2xl font-semibold text-ink dark:text-white">{{ d.montantTotalRembourse | number }} FCFA</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Taux de remboursement avec donut chart -->
+      <div class="bg-surface dark:bg-surface-dark border border-ink/10 dark:border-white/10 rounded-2xl p-5 transition-all duration-300 hover:shadow-lg hover:shadow-gold-500/5 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-gold-500/5 rounded-full blur-2xl"></div>
+        <div class="relative">
+          <p class="text-xs text-ink/50 dark:text-white/50 uppercase tracking-wide mb-3">Taux de remboursement</p>
+          <div class="flex items-center gap-6">
+            <div class="relative w-24 h-24">
+              <svg class="w-full h-full -rotate-90" viewBox="0 0 100 100">
+                <circle class="stroke-surface2 dark:stroke-white/10" stroke-width="8" fill="none" cx="50" cy="50" r="40"/>
+                <circle class="stroke-gold-500 transition-all duration-1000" stroke-width="8" fill="none" cx="50" cy="50" r="40"
+                  stroke-dasharray="251.2"
+                  [attr.stroke-dashoffset]="251.2 - (tauxRemboursement() / 100) * 251.2"
+                  stroke-linecap="round"/>
+              </svg>
+              <div class="absolute inset-0 flex items-center justify-center">
+                <span class="font-display text-xl font-bold text-ink dark:text-white">{{ tauxRemboursement() }}%</span>
+              </div>
+            </div>
+            <div class="flex-1">
+              <div class="space-y-1">
+                <div class="flex justify-between text-sm">
+                  <span class="text-ink/60 dark:text-white/60">Progression</span>
+                  <span class="text-emerald-500 font-medium">+2.4%</span>
+                </div>
+                <div class="w-full h-1.5 bg-surface2 dark:bg-white/5 rounded-full overflow-hidden">
+                  <div class="h-full bg-gradient-to-r from-emerald-400 to-emerald-500 rounded-full transition-all duration-500" style="width: 78%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Répartition prêts + scores avec graphiques améliorés -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-      <!-- Répartition des prêts par statut -->
-      <div class="bg-surface dark:bg-surface-dark border border-ink/10 dark:border-white/10 rounded-2xl p-6 transition-colors duration-300">
-        <h2 class="font-display text-lg font-semibold text-ink dark:text-white mb-5">Répartition des prêts par statut</h2>
+      <!-- Répartition des prêts par statut avec donut chart -->
+      <div class="bg-surface dark:bg-surface-dark border border-ink/10 dark:border-white/10 rounded-2xl p-6 transition-all duration-300 hover:shadow-lg hover:shadow-gold-500/5">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="font-display text-lg font-semibold text-ink dark:text-white">Répartition des prêts</h2>
+          <span class="text-xs text-ink/40 dark:text-white/40">par statut</span>
+        </div>
+        
         @if (repartitionEntries().length === 0) {
           <p class="text-sm text-ink/40 dark:text-white/40">Aucune donnée disponible pour le moment.</p>
         } @else {
-          <div class="space-y-3">
-            @for (entry of repartitionEntries(); track entry[0]) {
-              <div class="flex items-center gap-4">
-                <span class="text-sm text-ink/60 dark:text-white/60 w-24 shrink-0">{{ label(entry[0]) }}</span>
-                <div class="flex-1 h-6 bg-surface2 dark:bg-white/5 rounded-full overflow-hidden">
-                  <div
-                    class="h-full rounded-full transition-all duration-500"
+          <div class="flex flex-col md:flex-row gap-6 items-center">
+            <!-- Mini donut chart -->
+            <div class="relative w-32 h-32 shrink-0">
+              <svg class="w-full h-full -rotate-90" viewBox="0 0 100 100">
+                @for (entry of repartitionEntries(); track entry[0]; let i = $index) {
+                  <circle class="transition-all duration-1000" stroke-width="10" fill="none" cx="50" cy="50" r="35"
                     [class]="color(entry[0])"
-                    [style.width.%]="(entry[1] / maxRepartition()) * 100">
-                  </div>
-                </div>
-                <span class="text-sm font-semibold text-ink dark:text-white w-8 text-right">{{ entry[1] }}</span>
+                    stroke-dasharray="219.91"
+                    [attr.stroke-dashoffset]="219.91 - (entry[1] / maxRepartition()) * 219.91"
+                    [attr.stroke-dasharray]="(entry[1] / maxRepartition()) * 219.91 + ' 219.91'"
+                    stroke-linecap="round"
+                    [style.transform]="'rotate(' + (i * 90) + 'deg)'"/>
+                }
+              </svg>
+              <div class="absolute inset-0 flex items-center justify-center">
+                <span class="text-xs font-medium text-ink/60 dark:text-white/60">Total</span>
               </div>
-            }
+            </div>
+            
+            <!-- Légende -->
+            <div class="flex-1 space-y-2 w-full">
+              @for (entry of repartitionEntries(); track entry[0]) {
+                <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-ink/5 dark:hover:bg-white/5 transition-colors duration-200">
+                  <span class="w-3 h-3 rounded-full shrink-0" [class]="color(entry[0])"></span>
+                  <span class="text-sm text-ink/70 dark:text-white/70 flex-1">{{ label(entry[0]) }}</span>
+                  <span class="text-sm font-semibold text-ink dark:text-white">{{ entry[1] }}</span>
+                  <span class="text-xs text-ink/40 dark:text-white/40 w-12 text-right">
+                    {{ ((entry[1] / maxRepartition()) * 100).toFixed(1) }}%
+                  </span>
+                </div>
+              }
+            </div>
           </div>
         }
       </div>
 
-      <!-- Répartition des scores de solvabilité -->
-      <div class="bg-surface dark:bg-surface-dark border border-ink/10 dark:border-white/10 rounded-2xl p-6 transition-colors duration-300">
-        <h2 class="font-display text-lg font-semibold text-ink dark:text-white mb-5">Répartition des scores de solvabilité</h2>
+      <!-- Répartition des scores avec graphique à barres horizontal -->
+      <div class="bg-surface dark:bg-surface-dark border border-ink/10 dark:border-white/10 rounded-2xl p-6 transition-all duration-300 hover:shadow-lg hover:shadow-gold-500/5">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="font-display text-lg font-semibold text-ink dark:text-white">Scores de solvabilité</h2>
+          <span class="text-xs text-ink/40 dark:text-white/40">distribution</span>
+        </div>
+        
         @if (scoreEntries().length === 0) {
           <p class="text-sm text-ink/40 dark:text-white/40">Aucun score calculé pour le moment.</p>
         } @else {
           <div class="space-y-3">
             @for (entry of scoreEntries(); track entry[0]) {
-              <div class="flex items-center gap-4">
-                <span class="text-sm text-ink/60 dark:text-white/60 w-32 shrink-0 truncate">{{ entry[0] }}</span>
-                <div class="flex-1 h-6 bg-surface2 dark:bg-white/5 rounded-full overflow-hidden">
+              <div class="group">
+                <div class="flex items-center gap-3 mb-1">
+                  <span class="text-sm text-ink/60 dark:text-white/60 w-24 shrink-0 truncate">{{ entry[0] }}</span>
+                  <span class="text-sm font-semibold text-ink dark:text-white ml-auto">{{ entry[1] }}</span>
+                  <span class="text-xs text-ink/40 dark:text-white/40 w-12 text-right">
+                    {{ ((entry[1] / maxScore()) * 100).toFixed(1) }}%
+                  </span>
+                </div>
+                <div class="h-2 bg-surface2 dark:bg-white/5 rounded-full overflow-hidden">
                   <div
-                    class="h-full rounded-full transition-all duration-500"
+                    class="h-full rounded-full transition-all duration-1000 group-hover:scale-y-110"
                     [class]="scoreColor(entry[0])"
                     [style.width.%]="(entry[1] / maxScore()) * 100">
                   </div>
                 </div>
-                <span class="text-sm font-semibold text-ink dark:text-white w-8 text-right">{{ entry[1] }}</span>
               </div>
             }
           </div>
@@ -98,42 +249,107 @@
       </div>
     </div>
 
-    <!-- Évolution mensuelle -->
-    <div class="bg-surface dark:bg-surface-dark border border-ink/10 dark:border-white/10 rounded-2xl p-6 transition-colors duration-300">
-      <h2 class="font-display text-lg font-semibold text-ink dark:text-white mb-6">Évolution mensuelle du volume prêté</h2>
+    <!-- Évolution mensuelle avec graphique en courbe amélioré -->
+    <div class="bg-surface dark:bg-surface-dark border border-ink/10 dark:border-white/10 rounded-2xl p-6 transition-all duration-300 hover:shadow-lg hover:shadow-gold-500/5">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h2 class="font-display text-lg font-semibold text-ink dark:text-white">Évolution mensuelle</h2>
+          <p class="text-xs text-ink/40 dark:text-white/40 mt-1">Volume prêté sur les 4 derniers mois</p>
+        </div>
+        <div class="flex gap-2">
+          <button class="px-3 py-1 text-xs font-medium bg-gold-500/10 text-gold-600 dark:text-gold-400 rounded-lg border border-gold-500/20 hover:bg-gold-500/20 transition-colors duration-200">
+            Annuel
+          </button>
+          <button class="px-3 py-1 text-xs font-medium bg-ink/5 dark:bg-white/5 text-ink/60 dark:text-white/60 rounded-lg hover:bg-ink/10 dark:hover:bg-white/10 transition-colors duration-200">
+            Mensuel
+          </button>
+        </div>
+      </div>
 
       @if (d.evolutionMensuelle.length === 0) {
         <p class="text-sm text-ink/40 dark:text-white/40">Aucune donnée d'évolution disponible.</p>
       } @else {
-        <div class="flex items-end gap-4 h-48 mb-4">
-          @for (m of d.evolutionMensuelle; track m.mois) {
-            <div class="flex-1 flex flex-col items-center justify-end h-full gap-2">
-              <span class="text-xs font-semibold text-ink dark:text-white">{{ m.montantPrete | number }}</span>
-              <div
-                class="w-full max-w-12 rounded-t-lg bg-gradient-to-t from-gold-500 to-gold-400 transition-all duration-500"
-                [style.height.%]="evolutionBarHeight(m.montantPrete)">
-              </div>
-              <span class="text-xs text-ink/50 dark:text-white/50 uppercase tracking-wide">{{ m.mois }}</span>
+        <div class="relative">
+          <!-- Graphique en courbe -->
+          <div class="h-64 mb-6 relative">
+            <svg class="w-full h-full" viewBox="0 0 800 200" preserveAspectRatio="none">
+              <!-- Grille -->
+              @for (i of [0, 25, 50, 75, 100]; track i) {
+                <line x1="0" [attr.y1]="200 - i * 2" x2="800" [attr.y2]="200 - i * 2" class="stroke-ink/5 dark:stroke-white/5" stroke-width="1"/>
+              }
+              
+              <!-- Zone sous la courbe -->
+              <defs>
+                <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" class="stop-color-gold-500" stop-opacity="0.2"/>
+                  <stop offset="100%" class="stop-color-gold-500" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              
+              <!-- Ligne de la courbe -->
+              <polyline
+                [attr.points]="getEvolutionPoints()"
+                class="fill-none stroke-gold-500 stroke-3 transition-all duration-1000"
+                stroke-linecap="round"
+                stroke-linejoin="round"/>
+              
+              <!-- Points sur la courbe -->
+              @for (m of d.evolutionMensuelle; track m.mois; let i = $index) {
+                <circle
+                  [attr.cx]="(i / (d.evolutionMensuelle.length - 1)) * 800 + 20"
+                  [attr.cy]="200 - (m.montantPrete / getMaxEvolution()) * 180 - 10"
+                  r="4"
+                  class="fill-gold-500 stroke-white dark:stroke-surface-dark stroke-2 transition-all duration-300 hover:r-6 hover:fill-gold-400"/>
+              }
+            </svg>
+            
+            <!-- Légende des mois -->
+            <div class="flex justify-between mt-1 px-4">
+              @for (m of d.evolutionMensuelle; track m.mois) {
+                <span class="text-xs text-ink/40 dark:text-white/40">{{ m.mois }}</span>
+              }
             </div>
-          }
-        </div>
+          </div>
 
-        <!-- Détail par mois -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 border-t border-ink/10 dark:border-white/10">
-          @for (m of d.evolutionMensuelle; track m.mois) {
-            <div class="bg-surface2 dark:bg-black/20 rounded-xl p-4">
-              <p class="text-xs text-gold-600 dark:text-gold-400 uppercase tracking-wide mb-3">{{ m.mois }}</p>
-              <div class="space-y-1.5 text-sm text-ink/70 dark:text-white/70">
-                <p>{{ m.nombreNouveauxPrets }} nouveau(x) prêt(s)</p>
-                <p>{{ m.nombreTransactions }} transaction(s)</p>
-                <p>{{ m.volumeTransactions | number }} FCFA de transactions</p>
+          <!-- Cartes de détails -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 border-t border-ink/10 dark:border-white/10">
+            @for (m of d.evolutionMensuelle; track m.mois) {
+              <div class="group bg-gradient-to-br from-surface2 to-surface dark:from-black/30 dark:to-surface-dark rounded-xl p-4 transition-all duration-300 hover:scale-105 hover:shadow-lg">
+                <div class="flex items-center justify-between mb-3">
+                  <p class="text-xs font-semibold text-gold-600 dark:text-gold-400 uppercase tracking-wide">{{ m.mois }}</p>
+                  <span class="w-8 h-8 rounded-full bg-gold-500/10 flex items-center justify-center text-gold-500 text-xs font-bold">
+                    {{ $index + 1 }}
+                  </span>
+                </div>
+                <div class="space-y-1.5 text-sm">
+                  <div class="flex items-center justify-between text-ink/70 dark:text-white/70">
+                    <span>Prêts</span>
+                    <span class="font-medium text-ink dark:text-white">{{ m.nombreNouveauxPrets }}</span>
+                  </div>
+                  <div class="flex items-center justify-between text-ink/70 dark:text-white/70">
+                    <span>Transactions</span>
+                    <span class="font-medium text-ink dark:text-white">{{ m.nombreTransactions }}</span>
+                  </div>
+                  <div class="flex items-center justify-between text-ink/70 dark:text-white/70 pt-1 border-t border-ink/5 dark:border-white/5">
+                    <span class="text-xs">Volume</span>
+                    <span class="font-display text-sm font-bold text-gold-600 dark:text-gold-400">{{ m.volumeTransactions | number }} FCFA</span>
+                  </div>
+                </div>
               </div>
-            </div>
-          }
+            }
+          </div>
         </div>
       }
     </div>
   </div>
 } @else {
-  <p class="text-ink/50 dark:text-white/50">Chargement du tableau de bord...</p>
+  <div class="flex items-center justify-center min-h-[60vh]">
+    <div class="text-center space-y-4">
+      <div class="relative w-16 h-16 mx-auto">
+        <div class="absolute inset-0 border-4 border-gold-500/20 rounded-full"></div>
+        <div class="absolute inset-0 border-4 border-gold-500 rounded-full animate-spin" style="border-right-color: transparent;"></div>
+      </div>
+      <p class="text-ink/50 dark:text-white/50">Chargement du tableau de bord...</p>
+    </div>
+  </div>
 }

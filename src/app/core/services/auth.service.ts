@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 import { AuthResponse, ConnexionRequest, InscriptionRequest, Utilisateur } from '../models/auth.model';
 import { environment } from '../../../environments/environment';
+import { MessageResponse, MotDePasseOublieRequest, ReinitialiserMotDePasseRequest } from '../models/auth.model';
 
 const TOKEN_KEY = 'dtw_token';
 const USER_KEY = 'dtw_user';
@@ -79,4 +80,12 @@ export class AuthService {
       return null;
     }
   }
+
+  motDePasseOublie(payload: MotDePasseOublieRequest): Observable<MessageResponse> {
+  return this.http.post<MessageResponse>(`${this.apiUrl}/mot-de-passe-oublie`, payload);
+}
+
+reinitialiserMotDePasse(payload: ReinitialiserMotDePasseRequest): Observable<MessageResponse> {
+  return this.http.post<MessageResponse>(`${this.apiUrl}/reinitialiser-mot-de-passe`, payload);
+}
 }

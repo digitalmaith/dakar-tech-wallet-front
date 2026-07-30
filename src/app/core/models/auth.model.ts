@@ -28,3 +28,16 @@ export interface Utilisateur {
   email: string;
   role: Role;
 }
+
+export interface MotDePasseOublieRequest {
+  email: string;
+}
+
+export interface ReinitialiserMotDePasseRequest {
+  token: string;
+  nouveauMotDePasse: string;
+}
+
+export interface MessageResponse {
+  message: string;
+}

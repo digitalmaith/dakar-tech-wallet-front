@@ -29,7 +29,7 @@ export class UtilisateursComponent {
   utilisateurs = computed(() => this.utilisateursSource());
 
   processingId = signal<number | null>(null);
-  errorMessage = signal('');
+  errorMessage = signal<string | null>(null); // Changé pour accepter null
 
   async toggleStatut(utilisateur: UtilisateurAdmin): Promise<void> {
     const suspending = utilisateur.statutCompte === 'ACTIF';
@@ -47,7 +47,7 @@ export class UtilisateursComponent {
     if (!confirmed) return;
 
     this.processingId.set(utilisateur.id);
-    this.errorMessage.set('');
+    this.errorMessage.set(null); // Correction : null au lieu de ''
 
     const request = suspending
       ? this.adminService.suspendreUtilisateur(utilisateur.id)
@@ -58,20 +58,54 @@ export class UtilisateursComponent {
         this.processingId.set(null);
         this.refresh$.next();
       },
-      error: () => {
+      error: (error) => {
         this.processingId.set(null);
-        this.errorMessage.set(`Impossible de ${suspending ? 'suspendre' : 'réactiver'} ${nomComplet}.`);
+        this.errorMessage.set(error?.message || `Impossible de ${suspending ? 'suspendre' : 'réactiver'} ${nomComplet}.`);
       }
     });
   }
 
+  // Méthode pour la couleur du texte du score
   scoreColor(score: NiveauScore): string {
     switch (score) {
-      case 'EXCELLENT': return 'bg-green-500/10 text-green-600 dark:bg-green-400/20 dark:text-green-400';
-      case 'BON': return 'bg-gold-500/10 text-gold-600 dark:bg-gold-500/20 dark:text-gold-400';
-      case 'A_RISQUE': return 'bg-orange-500/10 text-orange-600 dark:bg-orange-400/20 dark:text-orange-400';
-      case 'MAUVAIS_PAYEUR': return 'bg-coral/10 text-coral dark:bg-coral/20';
-      default: return 'bg-ink/5 text-ink/60 dark:bg-white/10 dark:text-white/60';
+      case 'EXCELLENT': return 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 dark:bg-emerald-400/20';
+      case 'BON': return 'text-gold-600 dark:text-gold-400 bg-gold-500/10 dark:bg-gold-500/20';
+      case 'A_RISQUE': return 'text-orange-600 dark:text-orange-400 bg-orange-500/10 dark:bg-orange-400/20';
+      case 'MAUVAIS_PAYEUR': return 'text-coral dark:text-coral bg-coral/10 dark:bg-coral/20';
+      default: return 'text-ink/60 dark:text-white/60 bg-ink/5 dark:bg-white/10';
+    }
+  }
+
+  // Nouvelle méthode pour la couleur de la barre de score
+  scoreBarColor(score: NiveauScore): string {
+    switch (score) {
+      case 'EXCELLENT': return 'bg-emerald-500';
+      case 'BON': return 'bg-gold-500';
+      case 'A_RISQUE': return 'bg-orange-500';
+      case 'MAUVAIS_PAYEUR': return 'bg-coral';
+      default: return 'bg-ink/30';
+    }
+  }
+
+  // Méthode pour le pourcentage du score (pour la barre de progression)
+  scorePourcentage(score: NiveauScore): number {
+    switch (score) {
+      case 'EXCELLENT': return 100;
+      case 'BON': return 75;
+      case 'A_RISQUE': return 50;
+      case 'MAUVAIS_PAYEUR': return 25;
+      default: return 0;
+    }
+  }
+
+  // Méthode pour le libellé du score en français
+  scoreLabel(score: NiveauScore): string {
+    switch (score) {
+      case 'EXCELLENT': return 'Excellent';
+      case 'BON': return 'Bon';
+      case 'A_RISQUE': return 'À risque';
+      case 'MAUVAIS_PAYEUR': return 'Mauvais payeur';
+      default: return 'Non évalué';
     }
   }
 }
