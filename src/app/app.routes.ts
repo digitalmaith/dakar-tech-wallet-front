@@ -30,7 +30,9 @@ export const routes: Routes = [
       { path: 'dashboard', loadComponent: () => import('./features/client/dashboard/dashboard').then(m => m.DashboardComponent) },
       { path: 'virement', loadComponent: () => import('./features/client/virement/virement').then(m => m.VirementComponent) },
       { path: 'pret', loadComponent: () => import('./features/client/pret/pret').then(m => m.PretComponent) },
-      { path: 'remboursement', loadComponent: () => import('./features/client/remboursement/remboursement').then(m => m.RemboursementComponent) }
+      { path: 'remboursement', loadComponent: () => import('./features/client/remboursement/remboursement').then(m => m.RemboursementComponent) },
+      { path: 'qr', loadComponent: () => import('./features/client/qr/qr').then(m => m.QrComponent) },
+
     ]
   },
   {
