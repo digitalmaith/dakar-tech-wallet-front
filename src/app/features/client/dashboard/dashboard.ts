@@ -1,8 +1,9 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { WalletService } from '../../../core/services/wallet.service';
-import { TypeTransaction } from '../../../core/models/client.model';
+import { Transaction, TypeTransaction } from '../../../core/models/client.model';
 
 const TYPE_LABELS: Record<string, string> = {
   VIREMENT_ENVOYE: 'Virement envoyé',
@@ -14,12 +15,16 @@ const TYPE_LABELS: Record<string, string> = {
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './dashboard.html'
 })
 export class DashboardComponent {
   authService = inject(AuthService);
   walletService = inject(WalletService);
+
+  // Détail de transaction affiché en modal — état purement local,
+  // pas besoin du ConfirmDialogService puisqu'il n'y a rien à confirmer.
+  selectedTransaction = signal<Transaction | null>(null);
 
   transactionsTrieees = computed(() =>
     [...this.walletService.transactions()].sort(
@@ -33,5 +38,13 @@ export class DashboardComponent {
 
   isEntree(type: TypeTransaction): boolean {
     return type === 'VIREMENT_RECU' || type === 'PRET_CREDITE';
+  }
+
+  openDetail(transaction: Transaction): void {
+    this.selectedTransaction.set(transaction);
+  }
+
+  closeDetail(): void {
+    this.selectedTransaction.set(null);
   }
 }

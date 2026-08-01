@@ -1,23 +1,74 @@
-<div class="space-y-8">
+<div class="space-y-6 sm:space-y-8">
 
   <!-- Carte solde -->
-  <div class="bg-gradient-to-br from-ink to-ink/90 dark:from-surface-dark dark:to-deep rounded-3xl p-8 relative overflow-hidden">
+  <div class="bg-gradient-to-br from-ink to-ink/90 dark:from-surface-dark dark:to-deep rounded-3xl p-6 sm:p-8 relative overflow-hidden">
     <div class="absolute inset-0 opacity-10"
          style="background-image: repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(232,163,61,0.3) 8px, rgba(232,163,61,0.3) 9px);">
     </div>
     <div class="relative z-10">
       <p class="text-white/50 text-xs uppercase tracking-widest mb-1">Solde disponible</p>
       @if (walletService.solde(); as s) {
-        <p class="font-display text-4xl font-bold text-white mb-4">{{ s.solde | number:'1.0-2' }} FCFA</p>
+        <p class="font-display text-3xl sm:text-4xl font-bold text-white mb-4 break-all">{{ s.solde | number:'1.0-2' }} FCFA</p>
         <div class="flex items-center gap-2">
           <span class="text-white/40 text-xs">Compte</span>
-          <span class="text-gold-400 text-sm font-mono tracking-wide">{{ s.numeroCompte }}</span>
+          <span class="text-gold-400 text-xs sm:text-sm font-mono tracking-wide break-all">{{ s.numeroCompte }}</span>
         </div>
       } @else {
         <p class="text-white/40 text-sm">Chargement...</p>
       }
     </div>
   </div>
+
+  <!-- Actions rapides -->
+<div class="grid grid-cols-4 gap-4 sm:gap-5">
+  <!-- Virement -->
+  <button routerLink="/client/virement"
+    class="group relative flex flex-col items-center justify-center gap-2.5 bg-gradient-to-br from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-white font-semibold py-5 px-4 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 ease-out overflow-hidden">
+    <!-- Effet de brillance -->
+    <span class="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></span>
+    
+    <svg class="w-6 h-6 group-hover:scale-110 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4M16 17H4m0 0l4 4m-4-4l4-4" />
+    </svg>
+    <span class="text-sm sm:text-base tracking-wide">Virement</span>
+    
+    <!-- Badge indicateur -->
+    <span class="absolute -top-1 -right-1 w-2 h-2 bg-green-400 rounded-full ring-2 ring-white animate-pulse"></span>
+  </button>
+
+  <!-- Prêt -->
+  <button routerLink="/client/pret"
+    class="group relative flex flex-col items-center justify-center gap-2.5 bg-gradient-to-br from-coral to-coral/80 hover:from-coral/90 hover:to-coral/70 text-white font-semibold py-5 px-4 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 ease-out overflow-hidden">
+    <span class="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></span>
+    
+    <svg class="w-6 h-6 group-hover:scale-110 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V6m0 10v-2m9-4a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+    <span class="text-sm sm:text-base tracking-wide">Prêt</span>
+  </button>
+
+  <!-- Remboursement -->
+  <button routerLink="/client/remboursement"
+    class="group relative flex flex-col items-center justify-center gap-2.5 bg-gradient-to-br from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 text-white font-semibold py-5 px-4 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 ease-out overflow-hidden">
+    <span class="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></span>
+    
+    <svg class="w-6 h-6 group-hover:scale-110 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v14a2 2 0 01-2 2z" />
+    </svg>
+    <span class="text-sm sm:text-base tracking-wide">Remboursement</span>
+  </button>
+
+  <!-- Paiement -->
+  <button routerLink="/client/paiement"
+    class="group relative flex flex-col items-center justify-center gap-2.5 bg-gradient-to-br from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 text-white font-semibold py-5 px-4 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 ease-out overflow-hidden">
+    <span class="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></span>
+    
+    <svg class="w-6 h-6 group-hover:scale-110 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5h.01M12 13h.01M15 13h.01M12 16h.01M15 16h.01" />
+    </svg>
+    <span class="text-sm sm:text-base tracking-wide">Paiement</span>
+  </button>
+</div>
 
   <!-- Historique -->
   <div>
@@ -30,10 +81,13 @@
     } @else {
       <div class="bg-surface dark:bg-surface-dark border border-ink/10 dark:border-white/10 rounded-2xl divide-y divide-ink/5 dark:divide-white/5 transition-colors duration-300">
         @for (t of transactionsTrieees(); track t.id) {
-          <div class="flex items-center justify-between p-5">
-            <div class="flex items-center gap-4">
+          <button
+            type="button"
+            (click)="openDetail(t)"
+            class="w-full flex items-center justify-between gap-3 p-4 sm:p-5 text-left hover:bg-ink/[0.02] dark:hover:bg-white/[0.03] transition-colors">
+            <div class="flex items-center gap-3 sm:gap-4 min-w-0">
               <div
-                class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center shrink-0"
                 [class.bg-green-500/10]="isEntree(t.type)"
                 [class.bg-coral/10]="!isEntree(t.type)">
                 @if (isEntree(t.type)) {
@@ -46,9 +100,9 @@
                   </svg>
                 }
               </div>
-              <div>
-                <p class="text-sm font-medium text-ink dark:text-white">{{ label(t.type) }}</p>
-                <p class="text-xs text-ink/40 dark:text-white/40">{{ t.description }} · {{ t.dateTransaction | date:'dd/MM/yyyy HH:mm' }}</p>
+              <div class="min-w-0">
+                <p class="text-sm font-medium text-ink dark:text-white truncate">{{ label(t.type) }}</p>
+                <p class="text-xs text-ink/40 dark:text-white/40 truncate">{{ t.description }} · {{ t.dateTransaction | date:'dd/MM/yy HH:mm' }}</p>
               </div>
             </div>
             <p
@@ -56,11 +110,74 @@
               [class.text-green-600]="isEntree(t.type)"
               [class.dark:text-green-400]="isEntree(t.type)"
               [class.text-coral]="!isEntree(t.type)">
-              {{ isEntree(t.type) ? '+' : '-' }}{{ t.montant | number:'1.0-2' }} FCFA
+              {{ isEntree(t.type) ? '+' : '-' }}{{ t.montant | number:'1.0-2' }}
             </p>
-          </div>
+          </button>
         }
       </div>
     }
   </div>
 </div>
+
+<!-- Modal détail transaction -->
+@if (selectedTransaction(); as t) {
+  <div
+    class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink/40 dark:bg-black/60 backdrop-blur-sm"
+    (click)="closeDetail()">
+
+    <div
+      (click)="$event.stopPropagation()"
+      class="w-full max-w-sm bg-surface dark:bg-surface-dark rounded-2xl shadow-2xl border border-ink/10 dark:border-white/10 p-6 transition-colors duration-300">
+
+      <div class="flex items-start justify-between mb-6">
+        <div
+          class="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0"
+          [class.bg-green-500/10]="isEntree(t.type)"
+          [class.bg-coral/10]="!isEntree(t.type)">
+          @if (isEntree(t.type)) {
+            <svg class="w-5 h-5 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M7 11l5-5m0 0l5 5m-5-5v12" />
+            </svg>
+          } @else {
+            <svg class="w-5 h-5 text-coral" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 13l-5 5m0 0l-5-5m5 5V6" />
+            </svg>
+          }
+        </div>
+        <button type="button" (click)="closeDetail()" class="text-ink/40 dark:text-white/40 hover:text-ink dark:hover:text-white transition-colors">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <p class="text-xs text-ink/40 dark:text-white/40 uppercase tracking-wide mb-1">{{ label(t.type) }}</p>
+      <p
+        class="font-display text-3xl font-bold mb-6"
+        [class.text-green-600]="isEntree(t.type)"
+        [class.dark:text-green-400]="isEntree(t.type)"
+        [class.text-coral]="!isEntree(t.type)">
+        {{ isEntree(t.type) ? '+' : '-' }}{{ t.montant | number:'1.0-2' }} FCFA
+      </p>
+
+      <div class="space-y-3 pt-4 border-t border-ink/10 dark:border-white/10">
+        <div class="flex items-center justify-between text-sm">
+          <span class="text-ink/50 dark:text-white/50">Description</span>
+          <span class="text-ink dark:text-white font-medium text-right">{{ t.description || '—' }}</span>
+        </div>
+        <div class="flex items-center justify-between text-sm">
+          <span class="text-ink/50 dark:text-white/50">Date</span>
+          <span class="text-ink dark:text-white font-medium">{{ t.dateTransaction | date:'dd/MM/yyyy à HH:mm' }}</span>
+        </div>
+        <div class="flex items-center justify-between text-sm">
+          <span class="text-ink/50 dark:text-white/50">Solde après</span>
+          <span class="text-ink dark:text-white font-medium">{{ t.soldeApres | number:'1.0-2' }} FCFA</span>
+        </div>
+        <div class="flex items-center justify-between text-sm">
+          <span class="text-ink/50 dark:text-white/50">Référence</span>
+          <span class="text-ink dark:text-white font-medium font-mono">#{{ t.id }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+}
