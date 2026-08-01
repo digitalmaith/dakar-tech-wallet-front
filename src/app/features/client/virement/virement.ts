@@ -7,6 +7,9 @@ import { WalletService } from '../../../core/services/wallet.service';
 import { ConfirmDialogService } from '../../../core/services/confirm-dialog.service';
 import { beneficiaireExisteValidator } from '../../../core/validators/beneficiaire.validator';
 import { Beneficiaire } from '../../../core/models/client.model';
+import { extractErrorMessage, isEmailNonVerifieError  } from '../../../core/utils/http-error.util';
+import { AuthService } from '../../../core/services/auth.service';
+import { RouterLink } from '@angular/router';
 
 // Validation synchrone : interdit le virement si le montant dépasse le
 // solde disponible (le backend revalide de toute façon côté serveur).
@@ -22,13 +25,20 @@ function soldeSuffisantValidator(walletService: WalletService): ValidatorFn {
 @Component({
   selector: 'app-virement',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterLink],
   templateUrl: './virement.html'
 })
 export class VirementComponent {
   private fb = inject(FormBuilder);
   walletService = inject(WalletService);
   private confirmDialog = inject(ConfirmDialogService);
+  private authService = inject(AuthService);
+
+  emailNonVerifie = signal(false);
+
+  get userEmail(): string {
+  return this.authService.currentUser()?.email ?? '';
+}
 
   loading = signal(false);
   successMessage = signal('');
@@ -62,6 +72,11 @@ export class VirementComponent {
   beneficiaire = computed(() => this.beneficiaireSource());
 
   async onSubmit(): Promise<void> {
+
+    this.loading.set(true);
+    this.errorMessage.set('');
+    this.successMessage.set('');
+    this.emailNonVerifie.set(false);
     if (this.form.invalid || this.form.pending) {
       this.form.markAllAsTouched();
       return;
@@ -95,9 +110,7 @@ export class VirementComponent {
       },
       error: (err) => {
         this.loading.set(false);
-        this.errorMessage.set(
-          err.status === 400 ? 'Solde insuffisant ou compte bénéficiaire invalide.' : 'Une erreur est survenue. Réessayez.'
-        );
+        this.errorMessage.set(extractErrorMessage(err));
       }
     });
   }

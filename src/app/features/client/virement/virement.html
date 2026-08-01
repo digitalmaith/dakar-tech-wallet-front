@@ -1,8 +1,15 @@
-<div class="max-w-lg">
+<a routerLink="/client/dashboard" class="flex items-center gap-2 text-sm text-ink/50 dark:text-white/50 hover:text-ink dark:hover:text-white transition mb-6 w-fit">
+      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+      </svg>
+      Retour
+    </a>
+
   <h1 class="font-display text-2xl font-bold text-ink dark:text-white mb-1">Effectuer un virement</h1>
   <p class="text-ink/50 dark:text-white/50 text-sm mb-8">
     Solde disponible : <span class="font-semibold text-ink dark:text-white">{{ walletService.solde()?.solde | number:'1.0-2' }} FCFA</span>
   </p>
+  
 
   <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-5">
 
@@ -60,4 +67,3 @@
       {{ loading() ? 'Envoi en cours...' : 'Envoyer le virement' }}
     </button>
   </form>
-</div>

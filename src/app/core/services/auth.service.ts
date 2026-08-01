@@ -1,10 +1,17 @@
 import { Injectable, signal, computed } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
-import { AuthResponse, ConnexionRequest, InscriptionRequest, Utilisateur } from '../models/auth.model';
+import {
+  AuthResponse,
+  ConnexionRequest,
+  InscriptionRequest,
+  MessageResponse,
+  MotDePasseOublieRequest,
+  ReinitialiserMotDePasseRequest,
+  Utilisateur
+} from '../models/auth.model';
 import { environment } from '../../../environments/environment';
-import { MessageResponse, MotDePasseOublieRequest, ReinitialiserMotDePasseRequest } from '../models/auth.model';
 
 const TOKEN_KEY = 'dtw_token';
 const USER_KEY = 'dtw_user';
@@ -18,7 +25,20 @@ export class AuthService {
   readonly isAuthenticated = computed(() => this._currentUser() !== null);
   readonly isAdmin = computed(() => this._currentUser()?.role === 'ADMIN');
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) {
+    window.addEventListener('storage', (event) => {
+      if (event.key === USER_KEY && event.newValue) {
+        try {
+          this._currentUser.set(JSON.parse(event.newValue));
+        } catch {
+          // ignore un JSON malformé
+        }
+      }
+      if (event.key === USER_KEY && event.newValue === null) {
+        this._currentUser.set(null);
+      }
+    });
+  }
 
   inscription(payload: InscriptionRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/inscription`, payload).pipe(
@@ -32,11 +52,37 @@ export class AuthService {
     );
   }
 
+  motDePasseOublie(payload: MotDePasseOublieRequest): Observable<MessageResponse> {
+    return this.http.post<MessageResponse>(`${this.apiUrl}/mot-de-passe-oublie`, payload);
+  }
+
+  reinitialiserMotDePasse(payload: ReinitialiserMotDePasseRequest): Observable<MessageResponse> {
+    return this.http.post<MessageResponse>(`${this.apiUrl}/reinitialiser-mot-de-passe`, payload);
+  }
+
+  renvoyerVerification(email: string): Observable<MessageResponse> {
+    const params = new HttpParams().set('email', email);
+    return this.http.post<MessageResponse>(`${this.apiUrl}/renvoyer-verification`, null, { params });
+  }
+
+  verifierEmail(token: string): Observable<MessageResponse> {
+    const params = new HttpParams().set('token', token);
+    return this.http.get<MessageResponse>(`${this.apiUrl}/verifier-email`, { params });
+  }
+
+  marquerEmailVerifie(): void {
+    const utilisateur = this._currentUser();
+    if (!utilisateur) return;
+    const updated: Utilisateur = { ...utilisateur, emailVerifie: true };
+    localStorage.setItem(USER_KEY, JSON.stringify(updated));
+    this._currentUser.set(updated);
+  }
+
   logout(): void {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
     this._currentUser.set(null);
-    this.router.navigate(['/connexion']);
+    this.router.navigate(['/auth']);
   }
 
   getToken(): string | null {
@@ -61,7 +107,8 @@ export class AuthService {
       nom: res.nom,
       prenom: res.prenom,
       email: res.email,
-      role: res.role
+      role: res.role,
+      emailVerifie: res.emailVerifie
     };
     localStorage.setItem(USER_KEY, JSON.stringify(utilisateur));
     this._currentUser.set(utilisateur);
@@ -80,12 +127,4 @@ export class AuthService {
       return null;
     }
   }
-
-  motDePasseOublie(payload: MotDePasseOublieRequest): Observable<MessageResponse> {
-  return this.http.post<MessageResponse>(`${this.apiUrl}/mot-de-passe-oublie`, payload);
-}
-
-reinitialiserMotDePasse(payload: ReinitialiserMotDePasseRequest): Observable<MessageResponse> {
-  return this.http.post<MessageResponse>(`${this.apiUrl}/reinitialiser-mot-de-passe`, payload);
-}
 }

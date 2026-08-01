@@ -5,6 +5,7 @@ import { Subject, switchMap, startWith } from 'rxjs';
 import { AdminService } from '../../../core/services/admin.service';
 import { ConfirmDialogService } from '../../../core/services/confirm-dialog.service';
 import { NiveauScore, UtilisateurAdmin } from '../../../core/models/admin.model';
+import { extractErrorMessage } from '../../../core/utils/http-error.util';
 
 @Component({
   selector: 'app-utilisateurs',
@@ -58,9 +59,9 @@ export class UtilisateursComponent {
         this.processingId.set(null);
         this.refresh$.next();
       },
-      error: (error) => {
+      error: (err) => {
         this.processingId.set(null);
-        this.errorMessage.set(error?.message || `Impossible de ${suspending ? 'suspendre' : 'réactiver'} ${nomComplet}.`);
+        this.errorMessage.set(extractErrorMessage(err, `Impossible de ${suspending ? 'suspendre' : 'réactiver'} ${nomComplet}.`));
       }
     });
   }

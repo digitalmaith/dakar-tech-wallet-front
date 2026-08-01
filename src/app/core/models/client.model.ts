@@ -30,3 +30,34 @@ export interface DemandePretRequest {
   motif: string;
   dureeMois: number;
 }
+
+export type StatutPret = 'EN_ATTENTE' | 'VALIDE' | 'REJETE' | 'EN_COURS' | 'EN_RETARD' | 'SOLDE';
+export type StatutEcheance = 'EN_ATTENTE' | 'PAYEE' | 'EN_RETARD';
+
+export interface Echeance {
+  id: number;
+  numero: number;
+  dateEcheance: string;
+  montant: number;
+  statut: StatutEcheance;
+  datePaiement: string | null;
+}
+
+export interface PretClient {
+  id: number;
+  montant: number;
+  motif: string;
+  dureeMois: number;
+  statut: StatutPret;
+  dateDemande: string;
+  dateTraitement: string | null;
+  capitalRestant: number;
+  mensualite: number | null;
+  echeances: Echeance[];
+}
+
+export type TypeRemboursement = 'MENSUALITE' | 'TOTAL';
+
+export interface RemboursementRequest {
+  type: TypeRemboursement;
+}

@@ -5,6 +5,7 @@ import { Subject, switchMap, startWith } from 'rxjs';
 import { AdminService } from '../../../core/services/admin.service';
 import { ConfirmDialogService } from '../../../core/services/confirm-dialog.service';
 import { DemandePretEnAttente, NiveauScore } from '../../../core/models/admin.model';
+import { extractErrorMessage } from '../../../core/utils/http-error.util';
 
 @Component({
   selector: 'app-prets',
@@ -56,20 +57,20 @@ export class PretsComponent {
   }
 
   private process(id: number, request: ReturnType<AdminService['validerPret']>, action: 'valider' | 'rejeter'): void {
-    this.processingId.set(id);
-    this.errorMessage.set('');
+  this.processingId.set(id);
+  this.errorMessage.set('');
 
-    request.subscribe({
-      next: () => {
-        this.processingId.set(null);
-        this.refresh$.next();
-      },
-      error: () => {
-        this.processingId.set(null);
-        this.errorMessage.set(`Impossible de ${action} cette demande.`);
-      }
-    });
-  }
+  request.subscribe({
+    next: () => {
+      this.processingId.set(null);
+      this.refresh$.next();
+    },
+    error: (err) => {
+      this.processingId.set(null);
+      this.errorMessage.set(extractErrorMessage(err, `Impossible de ${action} cette demande.`));
+    }
+  });
+}
 
   scoreColor(score: NiveauScore): string {
     switch (score) {

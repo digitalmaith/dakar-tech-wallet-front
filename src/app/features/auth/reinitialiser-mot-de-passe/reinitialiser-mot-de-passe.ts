@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
+import { extractErrorMessage } from '../../../core/utils/http-error.util';
 
 function passwordsMatchValidator(group: AbstractControl): ValidationErrors | null {
   const pass = group.get('nouveauMotDePasse')?.value;
@@ -65,11 +66,7 @@ export class ReinitialiserMotDePasseComponent {
       },
       error: (err) => {
         this.loading.set(false);
-        this.errorMessage.set(
-          err.status === 400 || err.status === 404
-            ? 'Ce lien est invalide ou a expiré. Demandez-en un nouveau.'
-            : 'Une erreur est survenue. Réessayez.'
-        );
+        this.errorMessage.set(extractErrorMessage(err));
       }
     });
   }

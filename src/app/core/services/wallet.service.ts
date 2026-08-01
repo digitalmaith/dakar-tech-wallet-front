@@ -2,8 +2,9 @@ import { Injectable, computed, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject, startWith, switchMap } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { Beneficiaire, DemandePretRequest, Solde, Transaction, VirementRequest } from '../models/client.model';
+import { Beneficiaire, DemandePretRequest, RemboursementRequest, Solde, Transaction, VirementRequest } from '../models/client.model';
 import { Pret } from '../models/admin.model';
+import { PretClient } from '../models/client.model';
 
 @Injectable({ providedIn: 'root' })
 export class WalletService {
@@ -52,5 +53,13 @@ export class WalletService {
 
   demanderPret(payload: DemandePretRequest): Observable<Pret> {
     return this.http.post<Pret>(`${this.apiUrl}/prets`, payload);
+  }
+
+  getPrets(): Observable<PretClient[]> {
+  return this.http.get<PretClient[]>(`${this.apiUrl}/prets`);
+}
+
+  rembourser(pretId: number, payload: RemboursementRequest): Observable<Pret> {
+    return this.http.post<Pret>(`${this.apiUrl}/prets/${pretId}/remboursements`, payload);
   }
 }

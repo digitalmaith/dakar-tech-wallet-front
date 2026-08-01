@@ -16,6 +16,10 @@ export const routes: Routes = [
       path: 'reinitialiser-mot-de-passe',
       loadComponent: () => import('./features/auth/reinitialiser-mot-de-passe/reinitialiser-mot-de-passe').then(m => m.ReinitialiserMotDePasseComponent)
     },
+    {
+  path: 'verifier-email',
+  loadComponent: () => import('./features/auth/verifier-email/verifier-email').then(m => m.VerifierEmailComponent)
+},
   {
     path: 'client',
     canActivate: [authGuard],

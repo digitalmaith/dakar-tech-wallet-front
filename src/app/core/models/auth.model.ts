@@ -2,6 +2,7 @@ export interface InscriptionRequest {
   nom: string;
   prenom: string;
   email: string;
+  telephone: string;
   motDePasse: string;
 }
 
@@ -19,6 +20,7 @@ export interface AuthResponse {
   prenom: string;
   email: string;
   role: Role;
+  emailVerifie: boolean;
 }
 
 export interface Utilisateur {
@@ -27,6 +29,7 @@ export interface Utilisateur {
   prenom: string;
   email: string;
   role: Role;
+  emailVerifie: boolean;
 }
 
 export interface MotDePasseOublieRequest {
@@ -40,4 +43,8 @@ export interface ReinitialiserMotDePasseRequest {
 
 export interface MessageResponse {
   message: string;
+}
+
+export interface RenvoyerVerificationRequest {
+  email: string;
 }

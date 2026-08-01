@@ -5,6 +5,7 @@ import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, Va
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { Role } from '../../../core/models/auth.model';
+import { extractErrorMessage } from '../../../core/utils/http-error.util';
 
 type Mode = 'connexion' | 'inscription';
 type Step = 1 | 2 | 3;
@@ -56,12 +57,12 @@ export class AuthComponent {
 
   // Descriptions des étapes
   stepDescriptions(): { [key: number]: string } {
-    return {
-      1: 'Informations personnelles',
-      2: 'Email de connexion',
-      3: 'Sécurité'
-    };
-  }
+  return {
+    1: 'Informations personnelles',
+    2: 'Coordonnées',
+    3: 'Sécurité'
+  };
+}
 
   trackTransform = computed(() =>
     this.mode() === 'connexion' ? 'translateX(0%)' : 'translateX(-50%)'
@@ -80,6 +81,7 @@ export class AuthComponent {
     nom: ['', Validators.required],
     prenom: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
+    telephone: ['', [Validators.required, Validators.pattern(/^[0-9]{9,15}$/)]],
     motDePasse: ['', [Validators.required, Validators.minLength(6)]],
     confirmation: ['', Validators.required]
   }, { validators: passwordsMatchValidator });
@@ -123,7 +125,8 @@ export class AuthComponent {
       }
       case 2: {
         const emailValid = form.get('email')?.valid ?? false;
-        return emailValid;
+        const telephoneValid = form.get('telephone')?.valid ?? false;
+        return emailValid && telephoneValid;
       }
       case 3: {
         const motDePasseValid = form.get('motDePasse')?.valid ?? false;
@@ -170,14 +173,14 @@ export class AuthComponent {
   }
 
   private markStepAsTouched(step: Step): void {
-    const form = this.inscriptionForm;
-    const fieldsByStep: Record<Step, string[]> = {
-      1: ['nom', 'prenom'],
-      2: ['email'],
-      3: ['motDePasse', 'confirmation']
-    };
-    fieldsByStep[step].forEach(field => form.get(field)?.markAsTouched());
-  }
+  const form = this.inscriptionForm;
+  const fieldsByStep: Record<Step, string[]> = {
+    1: ['nom', 'prenom'],
+    2: ['email', 'telephone'],
+    3: ['motDePasse', 'confirmation']
+  };
+  fieldsByStep[step].forEach(field => form.get(field)?.markAsTouched());
+}
 
   // Redirection centralisée par rôle — un seul endroit à modifier
   // si un jour un 3e rôle apparaît (ex: GESTIONNAIRE).
@@ -201,9 +204,7 @@ export class AuthComponent {
       },
       error: (err) => {
         this.loading.set(false);
-        this.errorMessage.set(
-          err.status === 401 ? 'Email ou mot de passe incorrect.' : 'Une erreur est survenue. Réessayez.'
-        );
+        this.errorMessage.set(extractErrorMessage(err));
       }
     });
   }
@@ -225,9 +226,7 @@ export class AuthComponent {
       },
       error: (err) => {
         this.loading.set(false);
-        this.errorMessage.set(
-          err.status === 409 ? 'Cet email est déjà utilisé.' : 'Une erreur est survenue. Réessayez.'
-        );
+        this.errorMessage.set(extractErrorMessage(err));
       }
     });
   }

@@ -1,0 +1,42 @@
+@if (shouldShow()) {
+  <div class="bg-gold-500/10 border border-gold-500/30 rounded-2xl p-4 flex items-start gap-3">
+    <div class="w-9 h-9 rounded-xl bg-gold-500/20 flex items-center justify-center shrink-0">
+      <svg class="w-4 h-4 text-gold-600 dark:text-gold-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+      </svg>
+    </div>
+
+    <div class="flex-1 min-w-0">
+      @if (!sent()) {
+  <p class="text-sm font-medium text-ink dark:text-white mb-1">Email non vérifié</p>
+  <p class="text-sm text-ink/60 dark:text-white/60 mb-3">
+    Certaines opérations (virements, prêts) nécessitent un email vérifié. Vérifiez {{ email() }} ou renvoyez le lien.
+  </p>
+  <div class="flex items-center gap-4">
+    <button
+      (click)="renvoyer()"
+      [disabled]="sending()"
+      class="text-sm font-semibold text-gold-600 dark:text-gold-400 hover:underline disabled:opacity-50">
+      {{ sending() ? 'Envoi...' : 'Renvoyer l\'email' }}
+    </button>
+    <button
+      (click)="rafraichir()"
+      class="text-sm font-semibold text-ink/60 dark:text-white/60 hover:underline">
+      J'ai vérifié, actualiser
+    </button>
+  </div>
+}  @else {
+        <p class="text-sm font-medium text-ink dark:text-white mb-1">Email envoyé</p>
+        <p class="text-sm text-ink/60 dark:text-white/60">
+          Vérifiez votre boîte de réception à {{ email() }} et cliquez sur le lien reçu.
+        </p>
+      }
+    </div>
+
+    <button (click)="close()" class="text-ink/40 dark:text-white/40 hover:text-ink dark:hover:text-white transition-colors shrink-0">
+      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+}
