@@ -1,0 +1,56 @@
+<div class="relative">
+  <button
+    (click)="toggle()"
+    class="relative w-9 h-9 rounded-full flex items-center justify-center bg-surface2 dark:bg-white/10 text-ink/60 dark:text-white/60 hover:text-gold-600 dark:hover:text-gold-400 transition-colors">
+    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+    </svg>
+    @if (notificationService.nombreNonLues() > 0) {
+      <span class="absolute -top-1 -right-1 min-w-4 h-4 px-1 rounded-full bg-coral text-white text-[10px] font-bold flex items-center justify-center">
+        {{ notificationService.nombreNonLues() }}
+      </span>
+    }
+  </button>
+
+  @if (open()) {
+    <div class="absolute right-0 mt-2 w-80 bg-surface dark:bg-surface-dark border border-ink/10 dark:border-white/10 rounded-2xl shadow-xl overflow-hidden z-50">
+      <div class="flex items-center justify-between p-4 border-b border-ink/10 dark:border-white/10">
+        <p class="font-display font-semibold text-ink dark:text-white text-sm">Notifications</p>
+        @if (notificationService.nombreNonLues() > 0) {
+          <button (click)="notificationService.marquerToutLu()" class="text-xs text-gold-600 dark:text-gold-400 hover:underline">
+            Tout marquer comme lu
+          </button>
+        }
+      </div>
+
+      <div class="max-h-96 overflow-y-auto">
+        @if (notificationService.notifications().length === 0) {
+          <p class="p-6 text-center text-sm text-ink/40 dark:text-white/40">Aucune notification.</p>
+        } @else {
+          @for (n of notificationService.notifications(); track n.id) {
+            <button
+              (click)="onNotificationClick(n.id, n.lue, $event)"
+              class="w-full text-left p-4 border-b border-ink/5 dark:border-white/5 last:border-0 hover:bg-ink/[0.02] dark:hover:bg-white/[0.03] transition-colors flex items-start gap-3"
+              [class.bg-gold-500/5]="!n.lue">
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" [class]="style(n.type)">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center gap-2">
+                  <p class="text-sm text-ink dark:text-white" [class.font-semibold]="!n.lue">{{ n.titre }}</p>
+                  @if (!n.lue) {
+                    <span class="w-2 h-2 rounded-full bg-gold-500 shrink-0"></span>
+                  }
+                </div>
+                <p class="text-xs text-ink/60 dark:text-white/60 mt-0.5">{{ n.message }}</p>
+                <p class="text-xs text-ink/40 dark:text-white/40 mt-1">{{ n.dateCreation | date:'dd/MM/yyyy HH:mm' }}</p>
+              </div>
+            </button>
+          }
+        }
+      </div>
+    </div>
+  }
+</div>

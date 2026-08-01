@@ -10,6 +10,7 @@ import { Beneficiaire } from '../../../core/models/client.model';
 import { extractErrorMessage, isEmailNonVerifieError  } from '../../../core/utils/http-error.util';
 import { AuthService } from '../../../core/services/auth.service';
 import { RouterLink } from '@angular/router';
+import { ToastService } from '../../../core/services/toast.service';
 
 // Validation synchrone : interdit le virement si le montant dépasse le
 // solde disponible (le backend revalide de toute façon côté serveur).
@@ -33,6 +34,7 @@ export class VirementComponent {
   walletService = inject(WalletService);
   private confirmDialog = inject(ConfirmDialogService);
   private authService = inject(AuthService);
+  private toast = inject(ToastService);
 
   emailNonVerifie = signal(false);
 
@@ -102,15 +104,15 @@ export class VirementComponent {
       montant: montant!,
       description: description || ''
     }).subscribe({
-      next: () => {
+     next: () => {
         this.loading.set(false);
-        this.successMessage.set(`Virement de ${montant} FCFA envoyé avec succès.`);
+        this.toast.success(`Virement de ${montant} FCFA envoyé avec succès.`);
         this.form.reset({ numeroCompteBeneficiaire: '', montant: null, description: '' });
         this.walletService.refresh();
       },
       error: (err) => {
         this.loading.set(false);
-        this.errorMessage.set(extractErrorMessage(err));
+        this.toast.error(extractErrorMessage(err));
       }
     });
   }

@@ -1,1 +1,92 @@
-<p>remboursement works!</p>
+<div>
+  <a routerLink="/client/dashboard" class="flex items-center gap-2 text-sm text-ink/50 dark:text-white/50 hover:text-ink dark:hover:text-white transition mb-6 w-fit">
+    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+    </svg>
+    Retour
+  </a>
+
+  <h1 class="font-display text-2xl font-bold text-ink dark:text-white mb-1">Remboursements</h1>
+  <p class="text-ink/50 dark:text-white/50 text-sm mb-6">Payez une mensualité ou soldez un prêt en une fois.</p>
+
+  @if (successMessage()) {
+    <div class="bg-green-500/10 border border-green-500/20 rounded-xl p-3 mb-4">
+      <p class="text-green-700 dark:text-green-400 text-sm text-center">{{ successMessage() }}</p>
+    </div>
+  }
+  @if (errorMessage()) {
+    <div class="bg-coral/10 border border-coral/20 rounded-xl p-3 mb-4">
+      <p class="text-coral text-sm text-center">{{ errorMessage() }}</p>
+    </div>
+  }
+
+  @if (pretsRemboursables().length === 0) {
+    <div class="bg-surface dark:bg-surface-dark border border-ink/10 dark:border-white/10 rounded-2xl p-10 text-center transition-colors duration-300">
+      <p class="text-ink/50 dark:text-white/50">Aucun prêt en cours à rembourser.</p>
+    </div>
+  } @else {
+    <div class="space-y-4">
+      @for (pret of pretsRemboursables(); track pret.id) {
+        <div class="bg-surface dark:bg-surface-dark border border-ink/10 dark:border-white/10 rounded-2xl p-5 sm:p-6 transition-colors duration-300">
+
+          <div class="flex items-start justify-between gap-4 mb-4">
+            <div>
+              <p class="font-display text-xl font-bold text-ink dark:text-white">{{ pret.montant | number }} FCFA</p>
+              <p class="text-sm text-ink/50 dark:text-white/50">{{ pret.motif }}</p>
+            </div>
+            @if (pret.statut === 'EN_RETARD') {
+              <span class="px-3 py-1 rounded-full text-xs font-medium bg-coral/10 text-coral shrink-0">
+                {{ label(pret.statut) }}
+              </span>
+            } @else {
+              <span class="px-3 py-1 rounded-full text-xs font-medium bg-gold-500/10 text-gold-600 dark:text-gold-400 shrink-0">
+                {{ label(pret.statut) }}
+              </span>
+            }
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 text-sm mb-5">
+            <div>
+              <p class="text-ink/40 dark:text-white/40 text-xs uppercase tracking-wide mb-1">Capital restant</p>
+              <p class="text-ink dark:text-white font-medium">{{ pret.capitalRestant | number }} FCFA</p>
+            </div>
+            @if (pret.mensualite) {
+              <div>
+                <p class="text-ink/40 dark:text-white/40 text-xs uppercase tracking-wide mb-1">Mensualité</p>
+                <p class="text-ink dark:text-white font-medium">{{ pret.mensualite | number }} FCFA</p>
+              </div>
+            }
+          </div>
+
+          @if (prochaineEcheance(pret); as echeance) {
+            <div
+              class="flex items-center justify-between px-4 py-3 rounded-xl mb-4"
+              [class.bg-coral/10]="echeance.statut === 'EN_RETARD'"
+              [class.bg-surface2]="echeance.statut !== 'EN_RETARD'"
+              [class.dark:bg-white/5]="echeance.statut !== 'EN_RETARD'">
+              <span class="text-sm" [class.text-coral]="echeance.statut === 'EN_RETARD'" [class.text-ink/70]="echeance.statut !== 'EN_RETARD'" [class.dark:text-white/70]="echeance.statut !== 'EN_RETARD'">
+                Échéance n°{{ echeance.numero }} — {{ echeance.dateEcheance | date:'dd/MM/yyyy' }}
+              </span>
+              <span class="text-sm font-semibold text-ink dark:text-white">{{ echeance.montant | number }} FCFA</span>
+            </div>
+
+            <div class="flex gap-3">
+              <button
+                (click)="rembourserMensualite(pret)"
+                [disabled]="processingId() === pret.id"
+                class="flex-1 px-4 py-2.5 rounded-xl border-2 border-gold-500/30 text-gold-600 dark:text-gold-400 text-sm font-semibold hover:bg-gold-500/10 transition disabled:opacity-50">
+                {{ processingId() === pret.id ? 'Traitement...' : 'Payer la mensualité' }}
+              </button>
+              <button
+                (click)="rembourserTotal(pret)"
+                [disabled]="processingId() === pret.id"
+                class="flex-1 px-4 py-2.5 rounded-xl bg-gradient-to-r from-gold-500 to-gold-400 hover:from-gold-600 hover:to-gold-500 text-ink text-sm font-bold transition disabled:opacity-50">
+                {{ processingId() === pret.id ? 'Traitement...' : 'Solder maintenant' }}
+              </button>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>

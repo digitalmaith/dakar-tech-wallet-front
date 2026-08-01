@@ -1,13 +1,13 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Subject, startWith, switchMap } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { WalletService } from '../../../core/services/wallet.service';
 import { ConfirmDialogService } from '../../../core/services/confirm-dialog.service';
 import { PretClient, StatutPret } from '../../../core/models/client.model';
 import { RouterLink } from '@angular/router';
 import { extractErrorMessage } from '../../../core/utils/http-error.util';
+import { interval, merge, startWith, Subject, switchMap } from 'rxjs';
 
 type Vue = 'liste' | 'formulaire';
 type Filtre = StatutPret | 'TOUS';
@@ -62,11 +62,9 @@ export class PretComponent {
   filtre = signal<Filtre>('EN_COURS');
 
   constructor() {
-    this.refresh$.pipe(
-      startWith(undefined),
-      switchMap(() => this.walletService.getPrets())
-    ).subscribe(prets => this.pretsSignal.set(prets));
-  }
+  const trigger$ = merge(this.refresh$, interval(15000)).pipe(startWith(undefined));
+  trigger$.pipe(switchMap(() => this.walletService.getPrets())).subscribe(prets => this.pretsSignal.set(prets));
+}
 
   pretsFiltres = computed(() => {
     const f = this.filtre();
