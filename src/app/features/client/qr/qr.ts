@@ -34,6 +34,12 @@ export class QrComponent implements OnDestroy {
   qrDataUrl = signal<string | null>(null);
   qrLoading = signal(false);
 
+  constructor() {
+    // Génère le QR dès l'arrivée sur la page — l'onglet par défaut est
+    // "recevoir" donc il doit être prêt sans attendre une interaction.
+    this.ouvrirRecevoir();
+  }
+
   async ouvrirRecevoir(): Promise<void> {
     this.onglet.set('recevoir');
     if (this.qrDataUrl()) return;
